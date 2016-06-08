@@ -9,5 +9,5 @@ Cavy is SQL manager for MySQL, PostgreSQL, SQL Server and SQLite.
 $ gulp
 # in separate console
 $ cd app
-$ HOT=true ../node_modules/.bin/electron .
+$ CAVY_HOT=true ../node_modules/.bin/electron .
 ```

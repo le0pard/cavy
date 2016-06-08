@@ -5,7 +5,7 @@
     <title>Cavy</title>
     <script>
       (function() {
-        if (!process.env.HOT) {
+        if (!process.env.CAVY_HOT) {
           var link = document.createElement('link');
           link.rel = 'stylesheet';
           link.href = './app.css';
@@ -29,7 +29,7 @@
         renderer.async = true;
 
         renderer.src = (function(){
-          if (process.env.HOT)
+          if (process.env.CAVY_HOT)
             return 'http://localhost:8888/build/renderer.js'
           else
             return './renderer.js';
