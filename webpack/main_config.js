@@ -23,7 +23,7 @@ module.exports = function(currentEnv) {
   var config = assign(mainConfig, {
     target: 'electron',
     entry:  entryPoints,
-    node: {
+    node:   {
       __dirname:  false,
       __filename: false
     },
