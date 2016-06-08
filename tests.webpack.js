@@ -1,5 +1,4 @@
 /* eslint-disable no-var */
-require('babel-polyfill')
 // Create a Webpack require context so we can dynamically require our
 // project's modules. Exclude test files in this context.
 var context = require.context('./src', true, /\.spec\.jsx?$/)
