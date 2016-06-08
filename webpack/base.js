@@ -29,34 +29,16 @@ module.exports = function(currentEnv) {
     }
   }
 
-  var preScripts = {
-    development: [
-      'webpack-dev-server/client?http://localhost:8888',
-      // Why only-dev-server instead of dev-server:
-      // https://github.com/webpack/webpack/issues/418#issuecomment-54288041
-      'webpack/hot/only-dev-server'
-    ],
-    test: []
-  }
-  var preScriptsEnv = preScripts[currentEnv] || []
-
-  var appScripts = ['./src/index.js']
-
-  var entryPoints = {
-    app: preScriptsEnv.concat(
-      appScripts
-    )
-  }
-
   var config = {
     browserSupport: browserSupport.browsers,
     cache:          isEnv('development'),
     debug:          isEnv('development'),
     devtool:        (isEnv('production') ? 'hidden-source-map' : (isEnv('development') || isEnv('test') ? 'inline-source-map' : 'source-map')),
     target:         'web',
-    entry:          entryPoints,
+    entry:          [],
     postcss: function() {
       return [
+        require('postcss-normalize')(),
         require('postcss-import')({addDependencyTo: webpack}),
         require('postcss-url')(),
         require('postcss-cssnext')({browsers: browserSupport.browsers}),
@@ -101,13 +83,7 @@ module.exports = function(currentEnv) {
           'process.env.WEBPACK_LOGGER_DISABLED': isEnv('production')
         })
       ]
-      if (isEnv('development')) {
-        plugins.push(
-          new webpack.HotModuleReplacementPlugin(),
-          // Tell reloader to not reload if there is an error.
-          new webpack.NoErrorsPlugin()
-        )
-      } else if (isEnv('test')) {
+      if (isEnv('test')) {
         plugins.push(
           new webpack.optimize.OccurenceOrderPlugin()
         // https://github.com/webpack/webpack/issues/1082

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cavy</title>
+    <script>
+      (function() {
+        if (!process.env.HOT) {
+          var link = document.createElement('link');
+          link.rel = 'stylesheet';
+          link.href = './app.css';
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(link, s);
+        }
+      }());
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <h1>Cavy</h1>
+    We are using node <script>document.write(process.versions.node)</script>,
+    Chrome <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+
+    <script>
+      (function() {
+        var renderer = document.createElement('script');
+        renderer.type = 'text/javascript';
+        renderer.async = true;
+
+        renderer.src = (function(){
+          if (process.env.HOT)
+            return 'http://localhost:8888/build/renderer.js'
+          else
+            return './renderer.js';
+        })();
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(renderer, s);
+      }());
+    </script>
+  </body>
+</html>

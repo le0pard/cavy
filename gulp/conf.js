@@ -8,5 +8,9 @@ module.exports = {
   },
   jsx: {
     src: ['src/**/*.jsx']
+  },
+  assets: {
+    app:     './app/**/*.{html,json}',
+    appDest: './build'
   }
 }

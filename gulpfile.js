@@ -12,7 +12,7 @@ process.env.NODE_PATH = [
   path.join(__dirname, 'node_modules')
 ].join(':')
 
-//require('./gulp/assets')
+require('./gulp/assets')
 require('./gulp/webpack')
 
 require('./gulp/eslint')
@@ -22,4 +22,5 @@ require('./gulp/test')
 
 //require('./gulp/svg-sprite')
 
+gulp.task('release', ['build', 'assets'])
 gulp.task('default', ['server'])
