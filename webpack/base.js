@@ -117,6 +117,12 @@ module.exports = function(currentEnv) {
       extensions: ['', '.js', '.jsx', '.json'],
       root:       [path.join(__dirname, '..', 'src')]
     },
+    externals: [
+      {sqlite3: 'commonjs sqlite3'},
+      {mysql: 'commonjs mysql'},
+      {pg: 'commonjs pg'},
+      {'pg-native': 'commonjs pg-native'}
+    ],
     profile: process.env.PROFILE_WEBPACK
   }
 

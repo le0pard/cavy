@@ -35,8 +35,7 @@ module.exports = function(currentEnv) {
       path:              'build/',
       filename:          '[name].js',
       sourceMapFilename: 'debugging/[file].map'
-    },
-    externals: []
+    }
   })
 
   return config
