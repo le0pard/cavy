@@ -1,2 +1,2 @@
-import 'main/db_interfaces'
+import 'main/db'
 import 'main/window'
