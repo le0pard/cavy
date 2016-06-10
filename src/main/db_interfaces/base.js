@@ -1,5 +1,4 @@
-import uuid from 'node-uuid'
 
-export function generateDBConnection() {
-  return uuid.v4()
+export function generateDBConnection(uuid) {
+  return null
 }
