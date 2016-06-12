@@ -83,7 +83,12 @@ module.exports = function(currentEnv) {
           'process.env.WEBPACK_LOGGER_DISABLED': isEnv('production')
         })
       ]
-      if (isEnv('test')) {
+      if (isEnv('development')) {
+        plugins.push(
+          // Tell reloader to not reload if there is an error.
+          new webpack.NoErrorsPlugin()
+        )
+      } else if (isEnv('test')) {
         plugins.push(
           new webpack.optimize.OccurenceOrderPlugin()
         // https://github.com/webpack/webpack/issues/1082

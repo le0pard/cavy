@@ -26,7 +26,7 @@ module.exports = function(currentEnv) {
   }
   var preScriptsEnv = preScripts[currentEnv] || []
 
-  var rendererScripts = ['./src/renderer.js']
+  var rendererScripts = ['./src/renderer/index.js']
 
   var entryPoints = {
     renderer: preScriptsEnv.concat(
@@ -41,9 +41,7 @@ module.exports = function(currentEnv) {
       var plugins = mainConfig.plugins
       if (isEnv('development')) {
         plugins.push(
-          new webpack.HotModuleReplacementPlugin(),
-          // Tell reloader to not reload if there is an error.
-          new webpack.NoErrorsPlugin()
+          new webpack.HotModuleReplacementPlugin()
         )
       }
       return plugins

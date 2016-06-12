@@ -4,7 +4,6 @@
 'use strict'
 
 var assign = require('lodash/object/assign')
-var webpack = require('webpack')
 var webpackConfig = require('../webpack/base')
 
 
@@ -15,7 +14,7 @@ module.exports = function(currentEnv) {
 
   var mainConfig = webpackConfig(currentEnv)
 
-  var mainScripts = ['./src/main.js']
+  var mainScripts = ['./src/main/index.js']
 
   var entryPoints = {
     main: mainScripts
@@ -28,16 +27,6 @@ module.exports = function(currentEnv) {
       __dirname:  false,
       __filename: false
     },
-    plugins: (function() {
-      var plugins = mainConfig.plugins
-      if (isEnv('development')) {
-        plugins.push(
-          // Tell reloader to not reload if there is an error.
-          new webpack.NoErrorsPlugin()
-        )
-      }
-      return plugins
-    })(),
     output: isEnv('development') ? {
       path:              'app/',
       filename:          '[name].js',
