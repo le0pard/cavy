@@ -17,8 +17,10 @@ const createWindow = () => {
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
-  if ('undefined' !== typeof process && 'development' === process.env.NODE_ENV)
+  if ('undefined' !== typeof process && 'development' === process.env.NODE_ENV) {
     mainWindow.webContents.openDevTools() // Open the DevTools.
+    mainWindow.maximize()
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {

@@ -1620,6 +1620,11 @@
       "from": "dev-null@>=0.1.1 <0.2.0",
       "resolved": "https://registry.npmjs.org/dev-null/-/dev-null-0.1.1.tgz"
     },
+    "dexie": {
+      "version": "1.4.1",
+      "from": "dexie@latest",
+      "resolved": "https://registry.npmjs.org/dexie/-/dexie-1.4.1.tgz"
+    },
     "di": {
       "version": "0.0.1",
       "from": "di@>=0.0.1 <0.0.2",
