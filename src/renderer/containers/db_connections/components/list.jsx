@@ -3,20 +3,32 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {NAMESPACE} from '../constants'
+import DBItem from './item'
 
 const {PropTypes} = React
 
 class DbConnectionsList extends React.Component {
   static propTypes = {
-    [NAMESPACE]: PropTypes.object.isRequired
+    [NAMESPACE]: PropTypes.object.isRequired,
+    actions: PropTypes.shape({
+      loadDatabases: PropTypes.func.isRequired
+    }).isRequired
   };
 
+  componentDidMount() {
+    this.loadDatabases()
+  }
+
+  loadDatabases() {
+    this.props.actions.loadDatabases()
+  }
+
   render() {
-    const data = this.props[NAMESPACE]
+    const {databases} = this.props[NAMESPACE]
 
     return (
       <ul>
-        <li>test</li>
+        {databases.map((database) => <DBItem key={database.id} database={database} />)}
       </ul>
     )
   }

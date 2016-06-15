@@ -1,4 +1,5 @@
 import actionTypes from './actionTypes'
+import {NAMESPACE} from './constants'
 import localDatabase from 'renderer/utils/local_database'
 
 export const addFieldChanged = (field) => ({
@@ -14,4 +15,14 @@ export const addNewDatabase = (fields) => ({
   ],
   shouldCallAsync: () => true,
   callAsync: () => localDatabase.addDatabase(fields)
+})
+
+export const loadDatabases = (fields) => ({
+  types: [
+    actionTypes.DB_CONNECTIONS_LOAD_DATABASES,
+    actionTypes.DB_CONNECTIONS_LOAD_DATABASES_SUCCESS,
+    actionTypes.DB_CONNECTIONS_LOAD_DATABASES_ERROR
+  ],
+  shouldCallAsync: (state) => !state[NAMESPACE].databases.length,
+  callAsync: () => localDatabase.loadDatabase()
 })

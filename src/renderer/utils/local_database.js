@@ -27,6 +27,10 @@ class LocalDatabase {
       then((count) => this.db.databases.add({...fields, uiOrder: count})).
       then((id) => this.db.databases.get(id))
   }
+
+  loadDatabase() {
+    return this.db.databases.orderBy('uiOrder').toArray()
+  }
 }
 
 export default (new LocalDatabase())
