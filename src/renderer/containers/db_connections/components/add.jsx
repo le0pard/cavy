@@ -10,7 +10,12 @@ class DbConnectionsAdd extends React.Component {
   static propTypes = {
     [NAMESPACE]: PropTypes.shape({
       addFormFields: PropTypes.shape({
-        dbType: PropTypes.string.isRequired
+        dbType: PropTypes.string.isRequired,
+        dbName: PropTypes.string.isRequired,
+        hostname: PropTypes.string.isRequired,
+        port: PropTypes.string.isRequired,
+        username: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired
       }).isRequired
     }).isRequired,
     actions: PropTypes.shape({
@@ -41,23 +46,23 @@ class DbConnectionsAdd extends React.Component {
           </div>
           <div>
             <label htmlFor='dbNameField'>Name</label>
-            <input id='dbNameField' name='dbName' type='text' maxlength='255' defaultValue={dbName} onChange={onFieldChanged} />
+            <input id='dbNameField' name='dbName' type='text' maxLength='255' defaultValue={dbName} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='hostnameField'>Hostname</label>
-            <input id='hostnameField' name='hostname' type='text' maxlength='255' defaultValue={hostname} onChange={onFieldChanged} />
+            <input id='hostnameField' name='hostname' type='text' maxLength='255' defaultValue={hostname} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='portField'>Port</label>
-            <input id='portField' name='port' type='number' maxlength='255' min='0' max='66000' pattern='[0-9]+' defaultValue={port} onChange={onFieldChanged} />
+            <input id='portField' name='port' type='number' maxLength='255' min='0' max='66000' pattern='[0-9]+' defaultValue={port} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='usernameField'>Username</label>
-            <input id='usernameField' name='username' type='text' maxlength='255' defaultValue={username} onChange={onFieldChanged} />
+            <input id='usernameField' name='username' type='text' maxLength='255' defaultValue={username} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='paswordField'>Password</label>
-            <input id='paswordField' name='password' type='password' maxlength='255' defaultValue={password} onChange={onFieldChanged} />
+            <input id='paswordField' name='password' type='password' maxLength='255' defaultValue={password} onChange={onFieldChanged} />
           </div>
           <div>
             <button>Add database</button>

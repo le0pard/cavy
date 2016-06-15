@@ -2,8 +2,6 @@ import Dexie from 'dexie'
 
 const DATABASE_NAME = 'cavy'
 const DATABASE_VERSION = 1
-const R_MODE = 'r' // read only mode
-const RW_MODE = 'rw' // read-write mode
 
 class LocalDatabase {
   constructor() {
