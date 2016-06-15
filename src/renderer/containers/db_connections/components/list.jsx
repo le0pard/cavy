@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link} from 'react-router'
 import {addDBConnection, IpcConnection} from '../actions'
 import {NAMESPACE} from '../constants'
 
@@ -19,7 +18,6 @@ class DbConnectionsList extends React.Component {
 
     return (
       <div>
-        <Link to='/database/add'>Add</Link>
         <h2>Length: {data.length}</h2>
         <a onClick={onClickLink}>Click!</a>
         <button onClick={onClickButton}>Test IPC</button>
