@@ -2,6 +2,8 @@ import Dexie from 'dexie'
 
 const DATABASE_NAME = 'cavy'
 const DATABASE_VERSION = 1
+const R_MODE = 'r' // read only mode
+const RW_MODE = 'rw' // read-write mode
 
 class LocalDatabase {
   constructor() {
@@ -12,22 +14,19 @@ class LocalDatabase {
 
   createDbSchema() {
     this.db.version(DATABASE_VERSION).stores({
-      databases: '++id,db_type,db_name,ui_order'
+      databases: '++id,dbType,dbName,uiOrder'
     })
   }
 
   connectToDatabase() {
     this.db.open()
-    this.db.transaction('rw', this.db.databases, () => {
-      /*
-      this.db.databases.add({
-        db_type: 'pg',
-        db_name: 'PostgreSQL',
-        ui_order: 1
-      })
-      */
-    })
+  }
+
+  addDatabase(fields) {
+    return this.db.databases.count().
+      then((count) => this.db.databases.add({...fields, uiOrder: count})).
+      then((id) => this.db.databases.get(id))
   }
 }
 
-export default LocalDatabase
+export default (new LocalDatabase())

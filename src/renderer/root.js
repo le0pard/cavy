@@ -18,7 +18,6 @@ class Root extends React.Component {
       </Provider>
     )
   }
-
 }
 
 export default Root

@@ -25,12 +25,12 @@ import assign from 'lodash/object/assign'
 //   }
 // }
 
-const ApiMiddleware = ({dispatch, getState}) => {
+const AsyncMiddleware = ({dispatch, getState}) => {
   return next => action => {
     const {
       types,
-      callAPI,
-      shouldCallAPI = () => true,
+      callAsync,
+      shouldCallAsync = () => true,
       payload = {}
     } = action
 
@@ -45,10 +45,10 @@ const ApiMiddleware = ({dispatch, getState}) => {
     )
       throw new Error('Expected an array of three string types')
 
-    if (typeof callAPI !== 'function')
-      throw new Error('Expected fetch to be a function.')
+    if (typeof callAsync !== 'function')
+      throw new Error('Expected callAsync to be a function.')
 
-    if (!shouldCallAPI(getState()))
+    if (!shouldCallAsync(getState()))
       return null
 
     const [requestType, successType, failureType] = types
@@ -57,7 +57,7 @@ const ApiMiddleware = ({dispatch, getState}) => {
       type: requestType
     }))
 
-    return callAPI().then(
+    return callAsync().then(
       response => dispatch(assign({}, payload, {
         response,
         type: successType
@@ -70,4 +70,4 @@ const ApiMiddleware = ({dispatch, getState}) => {
   }
 }
 
-export default ApiMiddleware
+export default AsyncMiddleware

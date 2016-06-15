@@ -1,7 +1,7 @@
-import ApiMiddleware from './api_middleware'
+import AsyncMiddleware from './async_middleware'
 import IpcMiddleware from './ipc_middleware'
 
 export {
-  ApiMiddleware,
+  AsyncMiddleware,
   IpcMiddleware
 }

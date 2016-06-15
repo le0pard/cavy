@@ -1,15 +1,17 @@
 import actionTypes from './actionTypes'
+import localDatabase from 'renderer/utils/local_database'
 
-export const addDBConnection = (text) => ({
-  type: actionTypes.DB_CONNECTIONS_ADD,
-  text
+export const addFieldChanged = (field) => ({
+  type: actionTypes.DB_CONNECTIONS_ADD_FIELD_CHANGED,
+  field
 })
 
-export const IpcConnection = (database) => ({
-  ipcTypes: [
-    actionTypes.DB_CONNECTIONS_ADD,
-    actionTypes.DB_CONNECTIONS_ADD_SUCCESS,
-    actionTypes.DB_CONNECTIONS_ADD_ERROR
+export const addNewDatabase = (fields) => ({
+  types: [
+    actionTypes.DB_CONNECTIONS_ADD_DATABASE,
+    actionTypes.DB_CONNECTIONS_ADD_DATABASE_SUCCESS,
+    actionTypes.DB_CONNECTIONS_ADD_DATABASE_ERROR
   ],
-  database
+  shouldCallAsync: () => true,
+  callAsync: () => localDatabase.addDatabase(fields)
 })
