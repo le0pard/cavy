@@ -1,4 +1,5 @@
 import React from 'react'
+import {DbConnectionsAdd} from '../containers/db_connections/components'
 
 class IndexPage extends React.Component {
 
@@ -6,6 +7,7 @@ class IndexPage extends React.Component {
     return (
       <div>
         <h1>Cavy! here</h1>
+        <DbConnectionsAdd />
       </div>
     )
   }
