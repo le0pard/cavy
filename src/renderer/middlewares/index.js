@@ -1,2 +1,7 @@
-export ApiMiddleware from './api_middleware' //eslint-disable-line object-curly-spacing
-export IpcMiddleware from './ipc_middleware' //eslint-disable-line object-curly-spacing
+import ApiMiddleware from './api_middleware'
+import IpcMiddleware from './ipc_middleware'
+
+export {
+  ApiMiddleware,
+  IpcMiddleware
+}

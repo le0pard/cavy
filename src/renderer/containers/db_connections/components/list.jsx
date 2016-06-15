@@ -5,7 +5,7 @@ import {NAMESPACE} from '../constants'
 
 const {PropTypes} = React
 
-class DbConnection extends React.Component {
+class DbConnectionsList extends React.Component {
   static propTypes = {
     [NAMESPACE]:   PropTypes.array.isRequired,
     onClickButton: PropTypes.func.isRequired,
@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export const DbConnectionView = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DbConnection)
+)(DbConnectionsList)

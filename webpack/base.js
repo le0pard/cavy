@@ -38,9 +38,9 @@ module.exports = function(currentEnv) {
     entry:          [],
     postcss: function() {
       return [
-        require('postcss-normalize')(),
         require('postcss-import')({addDependencyTo: webpack}),
         require('postcss-url')(),
+        require('postcss-normalize')(),
         require('rucksack-css')(),
         require('lost')(),
         require('postcss-cssnext')({browsers: browserSupport.browsers}),
