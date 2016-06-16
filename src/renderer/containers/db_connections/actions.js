@@ -26,3 +26,13 @@ export const loadDatabases = (fields) => ({
   shouldCallAsync: (state) => !state[NAMESPACE].databases.length,
   callAsync: () => localDatabase.loadDatabase()
 })
+
+export const connectToDatabase = (database) => ({
+  ipcTypes: [
+    actionTypes.DB_CONNECTIONS_IPC_CONNECT,
+    actionTypes.DB_CONNECTIONS_IPC_CONNECT_SUCCESS,
+    actionTypes.DB_CONNECTIONS_IPC_CONNECT_ERROR
+  ],
+  ipcAction: 'connectToDB',
+  database
+})

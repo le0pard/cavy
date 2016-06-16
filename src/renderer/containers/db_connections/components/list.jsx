@@ -16,10 +16,6 @@ class DbConnectionsList extends React.Component {
   };
 
   componentDidMount() {
-    this.loadDatabases()
-  }
-
-  loadDatabases() {
     this.props.actions.loadDatabases()
   }
 

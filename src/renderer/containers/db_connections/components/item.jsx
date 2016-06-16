@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router'
 
 const {PropTypes} = React
 
@@ -16,7 +17,7 @@ class DbConnectionsItem extends React.Component {
     const {id, dbType, dbName} = this.props.database
     return (
       <div>
-        <p>ID: {id}, {dbType}, {dbName}</p>
+        <Link to={`/databases/${id}`}>ID: {id}, {dbType}, {dbName}</Link>
       </div>
     )
   }

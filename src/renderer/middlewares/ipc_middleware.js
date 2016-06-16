@@ -7,8 +7,8 @@ let ipcRequestQueue = {}
 
 const IpcMiddleware = ({dispatch, getState}) => {
 
-  const isHaveIpcRequest = (response) => {
-    return response && response.ipcRequestId && ipcRequestQueue[response.ipcRequestId]
+  const isHaveIpcRequest = (ipcRequestId) => {
+    return ipcRequestId && ipcRequestQueue[ipcRequestId]
   }
 
   const cleanupIpcRequest = (ipcRequestId) => {
@@ -16,22 +16,24 @@ const IpcMiddleware = ({dispatch, getState}) => {
   }
 
   ipcRenderer.on(channels.IPC_SUCCESS_CHANNEL, (event, response) => {
-    if (isHaveIpcRequest(response)) {
+    const {ipcRequestId, ...rest} = response
+    if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
-        type: ipcRequestQueue[response.ipcRequestId].successType,
-        response
+        type: ipcRequestQueue[ipcRequestId].successType,
+        response: rest
       })
-      cleanupIpcRequest(response.ipcRequestId)
+      cleanupIpcRequest(ipcRequestId)
     }
   })
 
   ipcRenderer.on(channels.IPC_ERROR_CHANNEL, (event, error) => {
-    if (isHaveIpcRequest(error)) {
+    const {ipcRequestId, ...rest} = error
+    if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
-        type: ipcRequestQueue[error.ipcRequestId].failureType,
-        error
+        type: ipcRequestQueue[ipcRequestId].failureType,
+        error: rest
       })
-      cleanupIpcRequest(error.ipcRequestId)
+      cleanupIpcRequest(ipcRequestId)
     }
   })
 
@@ -51,6 +53,9 @@ const IpcMiddleware = ({dispatch, getState}) => {
       !ipcTypes.every(type => typeof type === 'string')
     )
       throw new Error('Expected an array of three string types')
+
+    if (typeof rest.ipcAction === 'undefined')
+      throw new Error('Expected ipcAction attribute.')
 
 
     const [requestType, successType, failureType] = ipcTypes
