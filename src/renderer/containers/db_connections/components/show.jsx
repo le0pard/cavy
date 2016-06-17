@@ -69,8 +69,8 @@ class DbConnectionsShow extends React.Component {
 
   connectToDatabase(e) {
     e.preventDefault()
-    const {selectedDatabase} = this.props
-    this.props.actions.connectToDatabase(selectedDatabase)
+    const {selectedDatabase, actions} = this.props
+    actions.connectToDatabase(selectedDatabase)
   }
 }
 

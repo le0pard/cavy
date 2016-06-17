@@ -23,8 +23,6 @@ const defaultState = {
 
 
 const reducer = (state = defaultState, action) => {
-  const {loaders} = state
-
   switch (action.type) {
     case actionTypes.DB_CONNECTIONS_ADD_FIELD_CHANGED:
       const oldAddFormFields = state.addFormFields

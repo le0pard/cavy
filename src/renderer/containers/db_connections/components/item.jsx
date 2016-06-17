@@ -34,8 +34,8 @@ class DbConnectionsItem extends React.Component {
   }
 
   selectDatabase(){
-    const {database} = this.props
-    this.props.actions.selectDatabase(database)
+    const {database, actions} = this.props
+    actions.selectDatabase(database)
   }
 }
 

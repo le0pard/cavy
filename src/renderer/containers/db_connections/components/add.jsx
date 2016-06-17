@@ -8,16 +8,14 @@ const {PropTypes} = React
 
 class DbConnectionsAdd extends React.Component {
   static propTypes = {
-    [NAMESPACE]: PropTypes.shape({
-      addFormFields: PropTypes.shape({
-        dbType: PropTypes.string.isRequired,
-        dbName: PropTypes.string.isRequired,
-        hostname: PropTypes.string.isRequired,
-        port: PropTypes.string.isRequired,
-        username: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired,
-        database: PropTypes.string.isRequired
-      }).isRequired
+    addFormFields: PropTypes.shape({
+      dbType: PropTypes.string.isRequired,
+      dbName: PropTypes.string.isRequired,
+      hostname: PropTypes.string.isRequired,
+      port: PropTypes.string.isRequired,
+      username: PropTypes.string.isRequired,
+      password: PropTypes.string.isRequired,
+      database: PropTypes.string.isRequired
     }).isRequired,
     actions: PropTypes.shape({
       addFieldChanged: PropTypes.func.isRequired,
@@ -31,7 +29,7 @@ class DbConnectionsAdd extends React.Component {
       hostname, port,
       username, password,
       database
-    } = this.props[NAMESPACE].addFormFields
+    } = this.props.addFormFields
     const onFieldChanged = this.onFieldChanged.bind(this)
 
     return (
@@ -80,7 +78,8 @@ class DbConnectionsAdd extends React.Component {
 
   onFieldChanged(e) {
     const {name, value} = e.target
-    this.props.actions.addFieldChanged({
+    const {actions} = this.props
+    actions.addFieldChanged({
       name,
       value
     })
@@ -88,14 +87,15 @@ class DbConnectionsAdd extends React.Component {
 
   onAddConnection(e) {
     e.preventDefault()
-    const fields = this.props[NAMESPACE].addFormFields
-    this.props.actions.addNewDatabase(fields)
+    const {addFormFields, actions} = this.props
+    actions.addNewDatabase(fields)
   }
 }
 
 const mapStateToProps = (state) => {
+  const {addFormFields} = state[NAMESPACE]
   return {
-    [NAMESPACE]: state[NAMESPACE]
+    addFormFields
   }
 }
 
