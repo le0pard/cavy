@@ -1,5 +1,5 @@
 import assign from 'lodash/object/assign'
-import channels from 'constants/ipc'
+import ipcChannels from 'constants/ipc_channels'
 import {ipcRenderer} from 'electron'
 import uuid from 'node-uuid'
 
@@ -15,7 +15,7 @@ const IpcMiddleware = ({dispatch, getState}) => {
     delete ipcRequestQueue[ipcRequestId]
   }
 
-  ipcRenderer.on(channels.IPC_SUCCESS_CHANNEL, (event, response) => {
+  ipcRenderer.on(ipcChannels.IPC_SUCCESS_CHANNEL, (event, response) => {
     const {ipcRequestId, ...rest} = response
     if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
@@ -26,7 +26,7 @@ const IpcMiddleware = ({dispatch, getState}) => {
     }
   })
 
-  ipcRenderer.on(channels.IPC_ERROR_CHANNEL, (event, error) => {
+  ipcRenderer.on(ipcChannels.IPC_ERROR_CHANNEL, (event, error) => {
     const {ipcRequestId, ...rest} = error
     if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
@@ -71,7 +71,7 @@ const IpcMiddleware = ({dispatch, getState}) => {
       }
     }
 
-    ipcRenderer.send(channels.IPC_CHANNEL, newAction)
+    ipcRenderer.send(ipcChannels.IPC_REQUEST_CHANNEL, newAction)
 
     return dispatch(assign({}, rest, {
       type: requestType

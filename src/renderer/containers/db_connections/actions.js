@@ -1,5 +1,6 @@
 import actionTypes from './actionTypes'
 import {NAMESPACE} from './constants'
+import ipcActions from 'constants/ipc_actions'
 import localDatabase from 'renderer/utils/local_database'
 
 export const addFieldChanged = (field) => ({
@@ -33,6 +34,6 @@ export const connectToDatabase = (database) => ({
     actionTypes.DB_CONNECTIONS_IPC_CONNECT_SUCCESS,
     actionTypes.DB_CONNECTIONS_IPC_CONNECT_ERROR
   ],
-  ipcAction: 'connectToDB',
+  ipcAction: ipcActions.IPC_ACTION_CONNECT_TO_DB,
   database
 })

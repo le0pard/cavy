@@ -15,7 +15,8 @@ class DbConnectionsAdd extends React.Component {
         hostname: PropTypes.string.isRequired,
         port: PropTypes.string.isRequired,
         username: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired
+        password: PropTypes.string.isRequired,
+        database: PropTypes.string.isRequired
       }).isRequired
     }).isRequired,
     actions: PropTypes.shape({
@@ -28,7 +29,8 @@ class DbConnectionsAdd extends React.Component {
     const {
       dbType, dbName,
       hostname, port,
-      username, password
+      username, password,
+      database
     } = this.props[NAMESPACE].addFormFields
     const onFieldChanged = this.onFieldChanged.bind(this)
 
@@ -63,6 +65,10 @@ class DbConnectionsAdd extends React.Component {
           <div>
             <label htmlFor='paswordField'>Password</label>
             <input id='paswordField' name='password' type='password' maxLength='255' defaultValue={password} onChange={onFieldChanged} />
+          </div>
+          <div>
+            <label htmlFor='databaseField'>Database</label>
+            <input id='databaseField' name='database' type='text' maxLength='255' defaultValue={database} onChange={onFieldChanged} />
           </div>
           <div>
             <button>Add database</button>

@@ -1,8 +1,26 @@
 import pg from 'pg'
+import ipcChannels from 'constants/ipc_channels'
 
-export const connectToDB = (database) => {
-  pg.connect(`postgres://${database.username}:${database.password}@${database.hostname}/leo`, (err, client, done) => {
-    if (err)
-      return console.error('error fetching client from pool', err)
-  })
+const PGInterface = {
+
+  connectToDatabase: ({database, ipcRequestId, ipcAction, event}) => {
+    const pgConnectUrl = `postgres://${database.username}:${database.password}@${database.hostname}:${database.port || '5432'}/${database.database}`
+    pg.connect(pgConnectUrl, (connectError, client, done) => {
+      if (connectError)
+        return event.sender.send(ipcChannels.IPC_ERROR_CHANNEL, {error: connectError, ipcRequestId, ipcAction})
+
+      return client.query('SELECT VERSION() as version', (queryError, result) => {
+        done() //back connection to pool
+
+        if (queryError)
+          return event.sender.send(ipcChannels.IPC_ERROR_CHANNEL, {error: queryError, ipcRequestId, ipcAction})
+
+        const {version} = result.rows[0]
+        return event.sender.send(ipcChannels.IPC_SUCCESS_CHANNEL, {version, ipcRequestId, ipcAction})
+      })
+    })
+  }
+  
 }
+
+export default PGInterface

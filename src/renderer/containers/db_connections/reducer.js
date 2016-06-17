@@ -12,7 +12,8 @@ const defaultState = {
     hostname: 'localhost',
     port: '',
     username: '',
-    password: ''
+    password: '',
+    database: ''
   },
   addFormError: {}
 }
