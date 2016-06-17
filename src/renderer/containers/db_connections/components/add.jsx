@@ -8,6 +8,19 @@ const {PropTypes} = React
 
 class DbConnectionsAdd extends React.Component {
   static propTypes = {
+    addForm: PropTypes.shape({
+      loader: PropTypes.bool.isRequired,
+      fields:  PropTypes.shape({
+        dbType: PropTypes.object.isRequired,
+        dbName: PropTypes.object.isRequired,
+        hostname: PropTypes.object.isRequired,
+        port: PropTypes.object.isRequired,
+        username: PropTypes.object.isRequired,
+        password: PropTypes.object.isRequired,
+        database: PropTypes.object.isRequired,
+        socket: PropTypes.object.isRequired
+      }).isRequired
+    }).isRequired,
     actions: PropTypes.shape({
       addFieldChanged: PropTypes.func.isRequired,
       addNewDatabase: PropTypes.func.isRequired
