@@ -14,7 +14,8 @@ const defaultState = {
     port: '5432',
     username: '',
     password: '',
-    database: ''
+    database: '',
+    socket: ''
   },
   addFormError: {},
   addFormLoader: false

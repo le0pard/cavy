@@ -4,7 +4,12 @@ import ipcChannels from 'constants/ipc_channels'
 const PGInterface = {
 
   connectToDatabase: ({database, ipcRequestId, ipcAction, event}) => {
-    const conString = `postgres://${database.username}:${database.password}@${database.hostname || 'localhost'}:${database.port || '5432'}/${database.database || 'postgres'}`
+    const conString = (() => {
+      if (database.socket)
+        return `socket:${database.socket}?db=${database.database || 'postgres'}&encoding=utf8`
+      else
+        return `postgres://${database.username}:${database.password}@${database.hostname || 'localhost'}:${database.port || '5432'}/${database.database || 'postgres'}`
+    })()
     pg.connect(conString, (connectError, client, done) => {
       if (connectError)
         return event.sender.send(ipcChannels.IPC_ERROR_CHANNEL, {error: connectError, ipcRequestId})

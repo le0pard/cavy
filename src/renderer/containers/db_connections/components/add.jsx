@@ -24,12 +24,7 @@ class DbConnectionsAdd extends React.Component {
   };
 
   render() {
-    const {
-      dbType, dbName,
-      hostname, port,
-      username, password,
-      database
-    } = this.props.addFormFields
+    const {addFormFields} = this.props
     const onFieldChanged = this.onFieldChanged.bind(this)
 
     return (
@@ -38,7 +33,7 @@ class DbConnectionsAdd extends React.Component {
         <form onSubmit={this.onAddConnection.bind(this)}>
           <div>
             <label htmlFor='dbTypeField'>Database Type</label>
-            <select id='dbTypeField' name='dbType' defaultValue={dbType} onChange={onFieldChanged}>
+            <select id='dbTypeField' name='dbType' defaultValue={addFormFields.dbType} onChange={onFieldChanged}>
               <option value='pg'>PostgreSQL</option>
               <option value='mysql'>MySQL</option>
               <option value='sqlite'>Sqlite</option>
@@ -46,27 +41,31 @@ class DbConnectionsAdd extends React.Component {
           </div>
           <div>
             <label htmlFor='dbNameField'>Name</label>
-            <input id='dbNameField' name='dbName' type='text' maxLength='255' defaultValue={dbName} onChange={onFieldChanged} />
+            <input id='dbNameField' name='dbName' type='text' maxLength='255' defaultValue={addFormFields.dbName} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='hostnameField'>Hostname</label>
-            <input id='hostnameField' name='hostname' type='text' maxLength='255' defaultValue={hostname} onChange={onFieldChanged} />
+            <input id='hostnameField' name='hostname' type='text' maxLength='255' defaultValue={addFormFields.hostname} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='portField'>Port</label>
-            <input id='portField' name='port' type='number' maxLength='255' min='0' max='66000' pattern='[0-9]+' defaultValue={port} onChange={onFieldChanged} />
+            <input id='portField' name='port' type='number' maxLength='255' min='0' max='66000' pattern='[0-9]+' defaultValue={addFormFields.port} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='usernameField'>Username</label>
-            <input id='usernameField' name='username' type='text' maxLength='255' defaultValue={username} onChange={onFieldChanged} />
+            <input id='usernameField' name='username' type='text' maxLength='255' defaultValue={addFormFields.username} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='paswordField'>Password</label>
-            <input id='paswordField' name='password' type='password' maxLength='255' defaultValue={password} onChange={onFieldChanged} />
+            <input id='paswordField' name='password' type='password' maxLength='255' defaultValue={addFormFields.password} onChange={onFieldChanged} />
           </div>
           <div>
             <label htmlFor='databaseField'>Database</label>
-            <input id='databaseField' name='database' type='text' maxLength='255' defaultValue={database} onChange={onFieldChanged} />
+            <input id='databaseField' name='database' type='text' maxLength='255' defaultValue={addFormFields.database} onChange={onFieldChanged} />
+          </div>
+          <div>
+            <label htmlFor='socketField'>Socket</label>
+            <input id='socketField' name='socket' type='text' maxLength='255' defaultValue={addFormFields.socket} onChange={onFieldChanged} />
           </div>
           <div>
             <button>Add database</button>
@@ -88,7 +87,7 @@ class DbConnectionsAdd extends React.Component {
   onAddConnection(e) {
     e.preventDefault()
     const {addFormFields, actions} = this.props
-    actions.addNewDatabase(fields)
+    actions.addNewDatabase(addFormFields)
   }
 }
 
