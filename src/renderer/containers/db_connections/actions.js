@@ -28,6 +28,11 @@ export const loadDatabases = (fields) => ({
   callAsync: () => localDatabase.loadDatabase()
 })
 
+export const selectDatabase = (database) => ({
+  type: actionTypes.DB_CONNECTIONS_SELECTED_DATABASE,
+  database
+})
+
 export const connectToDatabase = (database) => ({
   ipcTypes: [
     actionTypes.DB_CONNECTIONS_IPC_CONNECT,

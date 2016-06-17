@@ -9,7 +9,7 @@ const {PropTypes} = React
 
 class DbConnectionsList extends React.Component {
   static propTypes = {
-    [NAMESPACE]: PropTypes.object.isRequired,
+    databases: PropTypes.array.isRequired,
     actions: PropTypes.shape({
       loadDatabases: PropTypes.func.isRequired
     }).isRequired
@@ -20,7 +20,7 @@ class DbConnectionsList extends React.Component {
   }
 
   render() {
-    const {databases} = this.props[NAMESPACE]
+    const {databases} = this.props
 
     return (
       <ul>
@@ -31,8 +31,9 @@ class DbConnectionsList extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  const {databases} = state[NAMESPACE]
   return {
-    [NAMESPACE]: state[NAMESPACE]
+    databases
   }
 }
 

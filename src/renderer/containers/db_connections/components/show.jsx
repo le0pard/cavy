@@ -11,39 +11,57 @@ const {PropTypes} = React
 
 class DbConnectionsShow extends React.Component {
   static propTypes = {
-    loaders: PropTypes.shape({
-      list: PropTypes.bool.isRequired
-    }).isRequired,
-    database: PropTypes.shape({
+    databases: PropTypes.array.isRequired,
+    databaseId: PropTypes.number.isRequired,
+    databasesLoader: PropTypes.bool.isRequired,
+    selectedDatabase: PropTypes.shape({
       id: PropTypes.number.isRequired
     }),
-    databaseId: PropTypes.number.isRequired,
     actions: PropTypes.shape({
-      connectToDatabase: PropTypes.func.isRequired
+      connectToDatabase: PropTypes.func.isRequired,
+      selectDatabase: PropTypes.func.isRequired
     }).isRequired
   };
 
+  componentWillMount() {
+    this.selectDatabase(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.databasesLoader !== this.props.databasesLoader) {
+      this.selectDatabase(nextProps)
+    }
+  }
+
+  selectDatabase(props) {
+    const {selectedDatabase, databases, databasesLoader, databaseId} = props
+    if (!databasesLoader && !selectedDatabase) {
+      const database = _find(databases, {id: databaseId})
+      if (database)
+        props.actions.selectDatabase(database)
+    }
+  }
+
   render() {
-    const {database, loaders} = this.props
-    if (loaders.list)
+    const {selectedDatabase, databasesLoader} = this.props
+    if (databasesLoader)
       return (<Loader />)
 
-    if (!database)
+    if (!selectedDatabase)
       return this.renderNotFoundDatabase()
 
     return (
       <div>
-        <p>ID: {database.id}, Type: {database.dbType}, Name: {database.dbName}</p>
+        <p>ID: {selectedDatabase.id}, Type: {selectedDatabase.dbType}, Name: {selectedDatabase.dbName}</p>
         <button onClick={this.connectToDatabase.bind(this)}>Test connection</button>
       </div>
     )
   }
 
   renderNotFoundDatabase() {
-    const {databaseId} = this.props
     return (
       <div>
-        <h2>Database not found (ID: {databaseId})</h2>
+        <h2>Database not found</h2>
         <Link to='/'>Go back</Link>
       </div>
     )
@@ -51,19 +69,18 @@ class DbConnectionsShow extends React.Component {
 
   connectToDatabase(e) {
     e.preventDefault()
-    const {database} = this.props
-    this.props.actions.connectToDatabase(database)
+    const {selectedDatabase} = this.props
+    this.props.actions.connectToDatabase(selectedDatabase)
   }
 }
 
 const mapStateToProps = (state, {params}) => {
-  const {databases, loaders} = state[NAMESPACE]
-  const databaseId = parseInt(params.id, 10)
-  const database = _find(databases, {id: databaseId})
+  const {databases, databasesLoader, selectedDatabase} = state[NAMESPACE]
   return {
-    loaders,
-    databaseId,
-    database
+    databases,
+    databasesLoader,
+    selectedDatabase,
+    databaseId: parseInt(params.id, 10)
   }
 }
 

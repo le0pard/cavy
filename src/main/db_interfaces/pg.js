@@ -4,8 +4,8 @@ import ipcChannels from 'constants/ipc_channels'
 const PGInterface = {
 
   connectToDatabase: ({database, ipcRequestId, ipcAction, event}) => {
-    const pgConnectUrl = `postgres://${database.username}:${database.password}@${database.hostname}:${database.port || '5432'}/${database.database}`
-    pg.connect(pgConnectUrl, (connectError, client, done) => {
+    const conString = `postgres://${database.username}:${database.password}@${database.hostname || 'localhost'}:${database.port || '5432'}/${database.database || 'postgres'}`
+    pg.connect(conString, (connectError, client, done) => {
       if (connectError)
         return event.sender.send(ipcChannels.IPC_ERROR_CHANNEL, {error: connectError, ipcRequestId})
 
@@ -19,6 +19,10 @@ const PGInterface = {
         return event.sender.send(ipcChannels.IPC_SUCCESS_CHANNEL, {version, ipcRequestId})
       })
     })
+  },
+
+  closeAllPool: () => {
+    pg.end()
   }
 
 }

@@ -1,4 +1,5 @@
 import electron from 'electron'
+import PGInterface from './db_interfaces/pg'
 // Module to control application life.
 const {app, BrowserWindow} = electron
 
@@ -24,6 +25,7 @@ const createWindow = () => {
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
+    PGInterface.closeAllPool() // close all pg pools
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.

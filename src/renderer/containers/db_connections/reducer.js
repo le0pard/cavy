@@ -1,11 +1,12 @@
 import actionTypes from './actionTypes'
 
+
 const defaultState = {
-  loaders: {
-    add: false,
-    list: true
-  },
   databases: [],
+  databasesLoader: true,
+
+  selectedDatabase: null,
+
   addFormFields: {
     dbType: 'pg',
     dbName: '',
@@ -15,8 +16,11 @@ const defaultState = {
     password: '',
     database: ''
   },
-  addFormError: {}
+  addFormError: {},
+  addFormLoader: false
 }
+
+
 
 const reducer = (state = defaultState, action) => {
   const {loaders} = state
@@ -27,18 +31,21 @@ const reducer = (state = defaultState, action) => {
       const addFormFields = {...oldAddFormFields, [action.field.name]: action.field.value}
       return {...state, addFormFields}
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE:
-      return {...state, loaders: {...loaders, add: true}}
+      return {...state, addFormLoader: true}
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_SUCCESS:
       const {databases} = state
-      return {...state, loaders: {...loaders, add: false}, databases: [...databases, action.response]}
+      return {...state, addFormLoader: false, databases: [...databases, action.response]}
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_ERROR:
-      return {...state, loaders: {...loaders, add: false}}
+      return {...state, addFormLoader: false}
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES:
-      return {...state, loaders: {...loaders, list: true}}
+      return {...state, databasesLoader: true}
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES_SUCCESS:
-      return {...state, loaders: {...loaders, list: false}, databases: action.response}
+      return {...state, databasesLoader: false, databases: action.response}
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES_ERROR:
-      return {...state, loaders: {...loaders, list: false}}
+      return {...state, databasesLoader: false}
+    case actionTypes.DB_CONNECTIONS_SELECTED_DATABASE:
+      const {database} = action
+      return {...state, selectedDatabase: database}
     default:
       return state
   }
