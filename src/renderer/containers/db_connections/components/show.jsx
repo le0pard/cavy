@@ -76,11 +76,12 @@ class DbConnectionsShow extends React.Component {
 
 const mapStateToProps = (state, {params}) => {
   const {databases, databasesLoader, selectedDatabase} = state[NAMESPACE]
+  const databaseId = parseInt(params.id, 10)
   return {
     databases,
     databasesLoader,
     selectedDatabase,
-    databaseId: parseInt(params.id, 10)
+    databaseId
   }
 }
 
