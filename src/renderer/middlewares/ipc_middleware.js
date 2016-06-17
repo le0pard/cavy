@@ -15,23 +15,23 @@ const IpcMiddleware = ({dispatch, getState}) => {
     delete ipcRequestQueue[ipcRequestId]
   }
 
-  ipcRenderer.on(ipcChannels.IPC_SUCCESS_CHANNEL, (event, response) => {
-    const {ipcRequestId, ...rest} = response
+  ipcRenderer.on(ipcChannels.IPC_SUCCESS_CHANNEL, (event, successResponse) => {
+    const {ipcRequestId, ...response} = successResponse
     if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
         type: ipcRequestQueue[ipcRequestId].successType,
-        response: rest
+        response
       })
       cleanupIpcRequest(ipcRequestId)
     }
   })
 
-  ipcRenderer.on(ipcChannels.IPC_ERROR_CHANNEL, (event, error) => {
-    const {ipcRequestId, ...rest} = error
+  ipcRenderer.on(ipcChannels.IPC_ERROR_CHANNEL, (event, errorResponse) => {
+    const {ipcRequestId, error} = errorResponse
     if (isHaveIpcRequest(ipcRequestId)) {
       dispatch({
         type: ipcRequestQueue[ipcRequestId].failureType,
-        error: rest
+        error
       })
       cleanupIpcRequest(ipcRequestId)
     }

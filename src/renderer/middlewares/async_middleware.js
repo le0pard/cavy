@@ -4,8 +4,8 @@ import assign from 'lodash/object/assign'
 // export function loadComments(postId) {
 //   return {
 //     types: ['LOAD_COMMENTS_REQUEST', 'LOAD_COMMENTS_SUCCESS', 'LOAD_COMMENTS_FAILURE'],
-//     shouldCallAPI: (state) => !state.comments[postId],
-//     callAPI: () => fetch(`http://myapi.com/posts/${postId}/comments`),
+//     shouldCallAsync: (state) => !state.comments[postId],
+//     callAsync: () => fetch(`http://myapi.com/posts/${postId}/comments`),
 //     payload: { postId }
 //   }
 // }
@@ -13,7 +13,7 @@ import assign from 'lodash/object/assign'
 // export function addComment(postId, message) {
 //   return {
 //     types: ['ADD_COMMENT_REQUEST', 'ADD_COMMENT_SUCCESS', 'ADD_COMMENT_FAILURE'],
-//     callAPI: () => fetch(`http://myapi.com/posts/${postId}/comments`, {
+//     callAsync: () => fetch(`http://myapi.com/posts/${postId}/comments`, {
 //       method: 'post',
 //       headers: {
 //         'Accept': 'application/json',

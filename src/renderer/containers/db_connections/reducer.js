@@ -3,14 +3,14 @@ import actionTypes from './actionTypes'
 const defaultState = {
   loaders: {
     add: false,
-    list: false
+    list: true
   },
   databases: [],
   addFormFields: {
     dbType: 'pg',
     dbName: '',
     hostname: 'localhost',
-    port: '',
+    port: '5432',
     username: '',
     password: '',
     database: ''

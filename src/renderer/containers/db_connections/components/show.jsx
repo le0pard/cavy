@@ -1,7 +1,8 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
+import {withRouter, Link} from 'react-router'
+import Loader from 'renderer/components/loader'
 import * as actions from '../actions'
 import {NAMESPACE} from '../constants'
 import _find from 'lodash/collection/find'
@@ -10,26 +11,26 @@ const {PropTypes} = React
 
 class DbConnectionsShow extends React.Component {
   static propTypes = {
-    [NAMESPACE]: PropTypes.shape({
-      databases: PropTypes.array.isRequired,
-      loaders: PropTypes.shape({
-        list: PropTypes.bool.isRequired
-      }).isRequired
+    loaders: PropTypes.shape({
+      list: PropTypes.bool.isRequired
     }).isRequired,
-    databaseId: PropTypes.string.isRequired,
+    database: PropTypes.shape({
+      id: PropTypes.number.isRequired
+    }),
+    databaseId: PropTypes.number.isRequired,
     actions: PropTypes.shape({
       connectToDatabase: PropTypes.func.isRequired
     }).isRequired
   };
 
   render() {
-    const {databases} = this.props[NAMESPACE]
-    const {list} = this.props[NAMESPACE].loaders
-    if (list || !databases.length)
-      return (<div>Loading...</div>)
+    const {database, loaders} = this.props
+    if (loaders.list)
+      return (<Loader />)
 
-    const {databaseId} = this.props
-    const database = _find(databases, {id: parseInt(databaseId, 10)})
+    if (!database)
+      return this.renderNotFoundDatabase()
+
     return (
       <div>
         <p>ID: {database.id}, Type: {database.dbType}, Name: {database.dbName}</p>
@@ -38,19 +39,31 @@ class DbConnectionsShow extends React.Component {
     )
   }
 
+  renderNotFoundDatabase() {
+    const {databaseId} = this.props
+    return (
+      <div>
+        <h2>Database not found (ID: {databaseId})</h2>
+        <Link to='/'>Go back</Link>
+      </div>
+    )
+  }
+
   connectToDatabase(e) {
     e.preventDefault()
-    const {databases} = this.props[NAMESPACE]
-    const {databaseId} = this.props
-    const database = _find(databases, {id: parseInt(databaseId, 10)})
+    const {database} = this.props
     this.props.actions.connectToDatabase(database)
   }
 }
 
 const mapStateToProps = (state, {params}) => {
+  const {databases, loaders} = state[NAMESPACE]
+  const databaseId = parseInt(params.id, 10)
+  const database = _find(databases, {id: databaseId})
   return {
-    [NAMESPACE]: state[NAMESPACE],
-    databaseId: params.id
+    loaders,
+    databaseId,
+    database
   }
 }
 
