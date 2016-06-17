@@ -1,41 +1,28 @@
 import actionTypes from './actionTypes'
-
-
-const defaultState = {
-  databases: [],
-  databasesLoader: true,
-
-  selectedDatabase: null,
-
-  addFormFields: {
-    dbType: 'pg',
-    dbName: '',
-    hostname: 'localhost',
-    port: '5432',
-    username: '',
-    password: '',
-    database: '',
-    socket: ''
-  },
-  addFormError: {},
-  addFormLoader: false
-}
-
-
+import defaultState from './reducerDefaultState'
 
 const reducer = (state = defaultState, action) => {
+  const {databases, addForm} = state
+
   switch (action.type) {
     case actionTypes.DB_CONNECTIONS_ADD_FIELD_CHANGED:
-      const oldAddFormFields = state.addFormFields
-      const addFormFields = {...oldAddFormFields, [action.field.name]: action.field.value}
-      return {...state, addFormFields}
+      const {fields} = addForm
+      const field = fields[action.field.name]
+      return {...state,
+        addForm: {...addForm,
+          fields: {...fields,
+            [action.field.name]: {
+              ...field, value: action.field.value
+            }
+          }
+        }
+      }
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE:
-      return {...state, addFormLoader: true}
+      return {...state, addForm: {...addForm, loader: true}}
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_SUCCESS:
-      const {databases} = state
-      return {...state, addFormLoader: false, databases: [...databases, action.response]}
+      return {...state, addForm: {...addForm, loader: false}, databases: [...databases, action.response]}
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_ERROR:
-      return {...state, addFormLoader: false}
+      return {...state, addForm: {...addForm, loader: false}}
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES:
       return {...state, databasesLoader: true}
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES_SUCCESS:
