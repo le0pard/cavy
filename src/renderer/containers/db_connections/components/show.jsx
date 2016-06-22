@@ -28,9 +28,8 @@ class DbConnectionsShow extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.databasesLoader !== this.props.databasesLoader) {
+    if (nextProps.databasesLoader !== this.props.databasesLoader)
       this.selectDatabase(nextProps)
-    }
   }
 
   selectDatabase(props) {
@@ -69,8 +68,8 @@ class DbConnectionsShow extends React.Component {
 
   connectToDatabase(e) {
     e.preventDefault()
-    const {selectedDatabase, actions} = this.props
-    actions.connectToDatabase(selectedDatabase)
+    const {selectedDatabase} = this.props
+    this.props.actions.connectToDatabase(selectedDatabase)
   }
 }
 

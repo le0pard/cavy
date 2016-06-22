@@ -27,15 +27,15 @@ class DbConnectionsItem extends React.Component {
   render() {
     const {id, dbType, dbName} = this.props.database
     return (
-      <div>
+      <li>
         <Link onClick={this.selectDatabase.bind(this)} to={`/databases/${id}`}>ID: {id}, {dbType}, {dbName}</Link>
-      </div>
+      </li>
     )
   }
 
-  selectDatabase(){
-    const {database, actions} = this.props
-    actions.selectDatabase(database)
+  selectDatabase() {
+    const {database} = this.props
+    this.props.actions.selectDatabase(database)
   }
 }
 

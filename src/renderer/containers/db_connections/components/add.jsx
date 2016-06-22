@@ -3,6 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import * as actions from '../actions'
 import {NAMESPACE} from '../constants'
+import dabatasesConstants from 'constants/databases'
 
 const {PropTypes} = React
 
@@ -38,9 +39,9 @@ class DbConnectionsAdd extends React.Component {
           <div>
             <label htmlFor='dbTypeField'>Database Type</label>
             <select id='dbTypeField' name='dbType' defaultValue={fields.dbType.defaultValue} onChange={onFieldChanged}>
-              <option value='pg'>PostgreSQL</option>
-              <option value='mysql'>MySQL</option>
-              <option value='sqlite'>Sqlite</option>
+              <option value={dabatasesConstants.PG_DATABASE}>PostgreSQL</option>
+              <option value={dabatasesConstants.MYSQL_DATABASE}>MySQL</option>
+              <option value={dabatasesConstants.SQLITE_DATABASE}>Sqlite</option>
             </select>
           </div>
           <div>
@@ -81,8 +82,7 @@ class DbConnectionsAdd extends React.Component {
 
   onFieldChanged(e) {
     const {name, value} = e.target
-    const {actions} = this.props
-    actions.addFieldChanged({
+    this.props.actions.addFieldChanged({
       name,
       value
     })
@@ -90,12 +90,12 @@ class DbConnectionsAdd extends React.Component {
 
   onAddConnection(e) {
     e.preventDefault()
-    const {addForm, actions} = this.props
+    const {addForm} = this.props
     const values = Object.keys(addForm.fields).reduce((agr, key) => {
       agr[key] = addForm.fields[key].value
       return agr
     }, {})
-    actions.addNewDatabase(values)
+    this.props.actions.addNewDatabase(values)
   }
 }
 

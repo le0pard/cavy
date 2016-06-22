@@ -3,7 +3,7 @@ import ipcChannels from 'constants/ipc_channels'
 
 const PGInterface = {
 
-  connectToDatabase: ({database, ipcRequestId, ipcAction, event}) => {
+  connectToDatabase: ({database, ipcRequestId, event}) => {
     const conString = (() => {
       if (database.socket)
         return `socket:${database.socket}?db=${database.database || 'postgres'}&encoding=utf8`
