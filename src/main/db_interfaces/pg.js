@@ -31,28 +31,28 @@ const PGInterface = {
       ]).then((results) => {
         const [versionResult, databasesResult, schemasResult] = results
         const {version} = versionResult.rows[0]
-        const databasesRows = databasesResult.rows
+        const dbsRows = databasesResult.rows
         const schemasRows = schemasResult.rows
         if (schemasRows.length) {
-          const tablesQueries = schemasRows.map((schema) => client.query('SELECT * FROM information_schema.tables WHERE table_schema = $1', [schema.name]))
+          const tablesQueries = schemasRows.map((schema) => client.query('SELECT t.table_name AS tablename, t.table_type AS tabletype FROM information_schema.tables t WHERE t.table_schema = $1', [schema.name]))
           Promise.all(tablesQueries).then((tablesResults) => {
             const schemas = schemasRows.reduce((agg, schema, index) => {
-              const tables = _groupBy(tablesResults[index].rows, (table) => table.table_type)
+              const tables = _groupBy(tablesResults[index].rows, (table) => table.tabletype)
               agg.push({...schema,
                 tables: tables['BASE TABLE'] || [],
                 views: tables['VIEW'] || [],
-                ['foreign_tables']: tables['FOREIGN TABLE'] || [],
-                ['local_temporary_tables']: tables['LOCAL TEMPORARY'] || []
+                foreignTables: tables['FOREIGN TABLE'] || [],
+                localTemporaryTables: tables['LOCAL TEMPORARY'] || []
               })
               return agg
             }, [])
-            PGInterface._returnSchemaWithDatabases({pgDatabase, version, databasesRows, schemas, ipcRequestId, event})
+            PGInterface._returnSchemaWithDatabases({pgDatabase, version, database, dbsRows, schemas, ipcRequestId, event})
           }).catch((queryError) => {
             event.sender.send(ipcChannels.IPC_ERROR_CHANNEL, {error: queryError, ipcRequestId})
           }).finally(() => client.release())
         } else {
           client.release()
-          PGInterface._returnSchemaWithDatabases({pgDatabase, version, databasesRows, schemas: [], ipcRequestId, event})
+          PGInterface._returnSchemaWithDatabases({pgDatabase, version, database, dbsRows, schemas: [], ipcRequestId, event})
         }
 
       }).catch((queryError) => {
@@ -64,14 +64,14 @@ const PGInterface = {
     })
   },
 
-  _returnSchemaWithDatabases({pgDatabase, version, databasesRows, schemas, ipcRequestId, event}) {
-    const databases = databasesRows.map((database) => {
-      if (database.name === pgDatabase)
-        return {...database, schemas}
+  _returnSchemaWithDatabases({pgDatabase, version, database, dbsRows, schemas, ipcRequestId, event}) {
+    const dbs = dbsRows.map((db) => {
+      if (db.name === pgDatabase)
+        return {...db, schemas}
       else
-        return database
+        return db
     })
-    event.sender.send(ipcChannels.IPC_SUCCESS_CHANNEL, {version, databases, ipcRequestId})
+    event.sender.send(ipcChannels.IPC_SUCCESS_CHANNEL, {version, database: {...database, dbs}, ipcRequestId})
   },
 
   closeAllConnections: () => {

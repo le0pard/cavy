@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import * as actions from '../actions'
-import {NAMESPACE} from '../constants'
+import DatabaseItem from 'renderer/containers/database/components/item'
 
 const {PropTypes} = React
 
@@ -12,7 +12,10 @@ class DbConnectionsItem extends React.Component {
     database: PropTypes.shape({
       id: PropTypes.number.isRequired,
       dbType: PropTypes.string.isRequired,
-      dbName: PropTypes.string
+      dbName: PropTypes.string,
+      dbs: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string.isRequired
+      }))
     }).isRequired,
     selectedDatabase: PropTypes.shape({
       id: PropTypes.number.isRequired,
@@ -25,10 +28,14 @@ class DbConnectionsItem extends React.Component {
   };
 
   render() {
-    const {id, dbType, dbName} = this.props.database
+    const {database} = this.props
+    const {id, dbType, dbName, dbs} = database
     return (
       <li>
         <Link onClick={this.selectDatabase.bind(this)} to={`/databases/${id}`}>ID: {id}, {dbType}, {dbName}</Link>
+        <div>
+          {dbs && dbs.map((db) => <DatabaseItem key={db.name} db={db} />)}
+        </div>
       </li>
     )
   }
@@ -40,10 +47,7 @@ class DbConnectionsItem extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  const {selectedDatabase} = state[NAMESPACE]
-  return {
-    selectedDatabase
-  }
+  return {}
 }
 
 const mapDispatchToProps = (dispatch) => {
