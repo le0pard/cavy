@@ -4,6 +4,7 @@ import defaultState from './reducerDefaultState'
 const reducer = (state = defaultState, action) => {
   switch (action.type) {
     case actionTypes.DB_CONNECTIONS_ADD_FIELD_CHANGED: {
+      const {addForm} = state
       const {fields} = addForm
       const field = fields[action.field.name]
       return {...state,
@@ -17,7 +18,7 @@ const reducer = (state = defaultState, action) => {
       }
     }
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE: {
-      const {databases, addForm} = state
+      const {addForm} = state
       return {...state, addForm: {...addForm, loader: true}}
     }
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_SUCCESS: {
@@ -25,7 +26,7 @@ const reducer = (state = defaultState, action) => {
       return {...state, addForm: {...addForm, loader: false}, databases: [...databases, action.response]}
     }
     case actionTypes.DB_CONNECTIONS_ADD_DATABASE_ERROR: {
-      const {databases, addForm} = state
+      const {addForm} = state
       return {...state, addForm: {...addForm, loader: false}}
     }
     case actionTypes.DB_CONNECTIONS_LOAD_DATABASES: {
