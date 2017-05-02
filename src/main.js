@@ -11,7 +11,7 @@ import windowStateKeeper from 'electron-window-state';
 let mainWindow = null;
 
 const createWindow = () => {
-  let mainWindowState = windowStateKeeper({
+  const mainWindowState = windowStateKeeper({
     defaultWidth: 960,
     defaultHeight: 640
   });

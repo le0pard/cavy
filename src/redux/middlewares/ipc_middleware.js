@@ -1,45 +1,49 @@
-import keyMirror from 'fbjs/lib/keyMirror';
 import assign from 'lodash/assign';
 import _omit from 'lodash/omit';
 import {ipcRenderer} from 'electron';
 import uuid from 'node-uuid';
-
-const IPC_ACTION_TYPES = keyMirror({
-  IPC_CHANNEL:         null, // channel for ipc
-  IPC_SUCCESS_CHANNEL: null, // reply success channel for ipc
-  IPC_ERROR_CHANNEL:   null  // reply error channel for ipc
-});
+import {actionTypes} from 'shared/ipc';
 
 let ipcRequestQueue = {};
 
-const isHaveIpcRequest = (response) => {
-  return response && response.ipcID && typeof ipcRequestQueue[response.ipcID] !== 'undefined';
+const isHaveIpcRequest = (ipcUUID) => {
+  return typeof ipcRequestQueue[ipcUUID] !== 'undefined';
 };
 
-const omitIpcRequest = (ipcID) => {
-  return _omit(ipcRequestQueue, ipcID);
+const omitIpcRequest = (ipcUUID) => {
+  return _omit(ipcRequestQueue, ipcUUID);
+};
+
+const subscribeToIpcSignals = () => {
+  const schemas = [
+    {
+      channel: actionTypes.IPC_SUCCESS_CHANNEL,
+      resultKey: 'result',
+      ipcKey: 'ipcSuccess'
+    },
+    {
+      channel: actionTypes.IPC_ERROR_CHANNEL,
+      resultKey: 'error',
+      ipcKey: 'ipcFailure'
+    }
+  ];
+
+  schemas.forEach((schema) => {
+    ipcRenderer.on(schema.channel, (event, response) => {
+      const {ipcUUID} = response;
+      if (isHaveIpcRequest(ipcUUID)) {
+        dispatch({
+          type: ipcRequestQueue[ipcUUID][ipcKey],
+          [schema.resultKey]: response[schema.resultKey]
+        });
+        ipcRequestQueue = omitIpcRequest(ipcUUID);
+      }
+    });
+  });
 };
 
 const IpcMiddleware = ({dispatch}) => {
-  ipcRenderer.on(IPC_ACTION_TYPES.IPC_SUCCESS_CHANNEL, (event, response) => {
-    if (isHaveIpcRequest(response)) {
-      dispatch({
-        type: ipcRequestQueue[response.ipcID].successType,
-        response
-      });
-      ipcRequestQueue = omitIpcRequest(response.ipcID);
-    }
-  });
-
-  ipcRenderer.on(IPC_ACTION_TYPES.IPC_ERROR_CHANNEL, (event, error) => {
-    if (isHaveIpcRequest(error)) {
-      dispatch({
-        type: ipcRequestQueue[error.ipcID].failureType,
-        error
-      });
-      ipcRequestQueue = omitIpcRequest(error.ipcID);
-    }
-  });
+  subscribeToIpcSignals();
 
   return next => action => {
     const {
@@ -60,23 +64,23 @@ const IpcMiddleware = ({dispatch}) => {
       throw new Error('Expected an array of three string types');
     }
 
-    const [requestType, successType, failureType] = ipcTypes;
+    const [ipcRequest, ipcSuccess, ipcFailure] = ipcTypes;
 
-    const ipcID = uuid.v4();
-    const newAction = assign({}, rest, {ipcID});
+    const ipcUUID = uuid.v4();
+    const newAction = assign({}, rest, {ipcUUID});
 
     ipcRequestQueue = {
       ...ipcRequestQueue,
-      [ipcID]: {
-        successType,
-        failureType
+      [ipcUUID]: {
+        ipcSuccess,
+        ipcFailure
       }
     };
 
-    ipcRenderer.send(IPC_ACTION_TYPES.IPC_CHANNEL, newAction);
+    ipcRenderer.send(actionTypes.IPC_CHANNEL, newAction);
 
     return dispatch(assign({}, rest, {
-      type: requestType
+      type: ipcRequest
     }));
   };
 };

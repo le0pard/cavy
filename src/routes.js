@@ -1,5 +1,5 @@
 import App from './pages/app';
-import DbConnect from './pages/db_connect';
+import Login from './pages/login';
 
 // routes
 export const routes = [{
@@ -7,6 +7,6 @@ export const routes = [{
   routes: [{
     path: '/',
     exact: true,
-    component: DbConnect
+    component: Login
   }]
 }];
