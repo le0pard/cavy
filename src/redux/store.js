@@ -2,7 +2,7 @@ import config from 'config';
 import {createStore, applyMiddleware} from 'redux';
 import {createLogger} from 'redux-logger';
 import rootReducer from './root_reducer';
-import {AsyncMiddleware} from './middlewares';
+import {AsyncMiddleware, IpcMiddleware} from './middlewares';
 import createHistory from 'history/createBrowserHistory';
 import {routerMiddleware} from 'react-router-redux';
 
@@ -11,6 +11,7 @@ export const routerHistory = createHistory();
 export const initializeStore = (preloadedState = null) => {
   let middlewares = [
     AsyncMiddleware,
+    IpcMiddleware,
     routerMiddleware(routerHistory)
   ];
 

@@ -6,7 +6,7 @@ import Root from './root';
 import {initializeStore} from './redux/store';
 
 const renderApp = (Component, appRoot, store) => {
-  ReactDom.render(<Component store={store} />,appRoot, () => {
+  ReactDom.render(<Component store={store} />, appRoot, () => {
     // need to make this for feature tests - application ready for testing
     window.__isAppReady = true;
   });
