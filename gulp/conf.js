@@ -1,16 +1,11 @@
 module.exports = {
   js: {
-    src: [
-      'gulpfile.js',
-      'src/**/*.js',
-      'webpack/*.js'
-    ]
+    src: ['src/**/*.js']
   },
   jsx: {
     src: ['src/**/*.jsx']
   },
-  assets: {
-    app:     './app/**/*.{html,json}',
-    appDest: './build'
+  css: {
+    src: ['src/**/*.sass']
   }
-}
+};

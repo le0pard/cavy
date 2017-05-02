@@ -1,13 +1,17 @@
 # Cavy
 
-Cavy is SQL manager for MySQL, PostgreSQL, SQL Server and SQLite.
-
+Cavy is SQL manager for PostgreSQL.
 
 ## Dev run
 
 ```bash
-$ gulp
+$ gulp start
 # in separate console
-$ cd app
-$ CAVY_HOT=true ../node_modules/.bin/electron .
+$ CAVY_DEV=true ./node_modules/.bin/electron build
+```
+
+## Build
+
+```bash
+$ NODE_ENV=production gulp build
 ```

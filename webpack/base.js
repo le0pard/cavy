@@ -3,135 +3,78 @@
 
 'use strict'
 
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var path = require('path')
-var webpack = require('webpack')
+const path = require('path');
+const conf = require('./conf');
+const webpack = require('webpack');
 
-var browserSupport = {
-  browsers: [
-    'last 2 version',
-    'Chrome 42'
-  ]
-}
+let baseConfig = {
+  output: {
+    path: path.join(__dirname, '..', (conf.isProduction ? 'release' : 'build')),
+    publicPath: '',
+    filename: conf.isProduction ? '[name]-[chunkhash].js' : '[name].js'
+  },
 
-module.exports = function(currentEnv) {
-  function isEnv() {
-    return Array.prototype.indexOf.call(arguments, currentEnv) >= 0
-  }
-
-  function stylesLoaders() {
-    var extLoaders = 'css-loader!postcss-loader'
-    var loader = isEnv('development', 'test') ? 'style-loader!' + extLoaders :
-      ExtractTextPlugin.extract('style-loader', extLoaders)
-    return {
-      loader: loader,
-      test:   /\.css$/
-    }
-  }
-
-  var config = {
-    browserSupport: browserSupport.browsers,
-    cache:          isEnv('development'),
-    debug:          isEnv('development'),
-    devtool:        (isEnv('production') ? 'hidden-source-map' : (isEnv('development') || isEnv('test') ? 'inline-source-map' : 'source-map')),
-    target:         'web',
-    entry:          [],
-    postcss: function() {
-      return [
-        require('postcss-import')({addDependencyTo: webpack}),
-        require('postcss-url')(),
-        require('postcss-normalize')(),
-        require('rucksack-css')(),
-        require('lost')(),
-        require('postcss-cssnext')({browsers: browserSupport.browsers}),
-        require('postcss-browser-reporter')(),
-        require('postcss-reporter')()
-      ]
-    },
-    module: {
-      loaders: [{
-        loader: 'url-loader?limit=10000',
-        test:   /\.(gif|jpg|png|woff|woff2|eot|ttf|svg|ico)$/
-      }, {
-        exclude: /node_modules/,
-        loaders: isEnv('development') ? [
-          'react-hot', 'babel-loader'
-        ] : [
-          'babel-loader'
-        ],
-        test: /\.(js|jsx)$/
-      }, {
-        test:    /\.json$/,
-        loaders: ['json']
-      }].concat(stylesLoaders()),
-      noParse: [
-        /node_modules\/bluebird\/js\/browser\/bluebird\.js/,
-        /moment\/moment\.js/
-      ]
-    },
-    output: isEnv('development') ? {
-      path:       path.join(__dirname, '/build/'),
-      filename:   '[name].js',
-      publicPath: 'http://localhost:8888/build/'
-    } : {
-      path:              'build/',
-      filename:          '[name].js',
-      sourceMapFilename: 'debugging/[file].map'
-    },
-    plugins: (function() {
-      var plugins = [
-        new webpack.DefinePlugin({
-          'process.env.NODE_ENV':                JSON.stringify(currentEnv),
-          'process.env.WEBPACK_LOGGER_DISABLED': isEnv('production')
-        })
-      ]
-      if (isEnv('development')) {
-        plugins.push(
-          // Tell reloader to not reload if there is an error.
-          new webpack.NoErrorsPlugin()
-        )
-      } else if (isEnv('test')) {
-        plugins.push(
-          new webpack.optimize.OccurenceOrderPlugin()
-        // https://github.com/webpack/webpack/issues/1082
-        //  new webpack.optimize.DedupePlugin()
-        )
-      } else {
-        plugins.push(
-          // Render styles into separate cacheable file to prevent FOUC and
-          // optimize for critical rendering path.
-          new ExtractTextPlugin('app.css', {
-            allChunks: true
-          }),
-          new webpack.optimize.DedupePlugin(),
-          new webpack.optimize.OccurenceOrderPlugin(),
-          new webpack.optimize.UglifyJsPlugin({
-            compress: {
-              warnings: false
-            },
-            mangle:    isEnv('production'),
-            sourceMap: true
-          })
-        )
-      }
-
-      return plugins
-    })(),
-    resolve: {
-      alias: {
-        bluebird: 'bluebird/js/browser/bluebird.js'
-      },
-      extensions: ['', '.js', '.jsx', '.json'],
-      root:       [path.join(__dirname, '..', 'src')]
-    },
-    externals: [
-      {sqlite3: 'commonjs sqlite3'},
-      {mysql: 'commonjs mysql'},
-      {pg: 'commonjs pg'},
-      {'pg-native': 'commonjs pg-native'}
+  resolve: {
+    modules: [
+      path.join(__dirname, '..', 'src'),
+      path.join(__dirname, '..', 'node_modules')
     ],
-    profile: process.env.PROFILE_WEBPACK
-  }
+    extensions: ['.js', '.jsx', '.json']
+  },
 
-  return config
-}
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: [
+          'babel-loader'
+        ]
+      }
+    ]
+  },
+
+  plugins: [],
+
+  externals: [
+    {sqlite3: 'commonjs sqlite3'},
+    {mysql: 'commonjs mysql'},
+    {pg: 'commonjs pg'},
+    {'pg-native': 'commonjs pg-native'}
+  ],
+
+  node:{
+    __dirname:  false,
+    __filename: false
+  }
+};
+
+if (conf.isProduction) {
+  baseConfig.plugins.push(
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compressor: {warnings: false},
+      sourceMap: false,
+      mangle: true
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {NODE_ENV: JSON.stringify('production')}
+    })
+  );
+} else {
+  baseConfig.plugins.push(
+    new webpack.NamedModulesPlugin()
+  );
+
+  baseConfig.devServer = {
+    host: conf.devServerHost,
+    port: conf.devServerPort,
+    headers: { 'Access-Control-Allow-Origin': '*' },
+    disableHostCheck: true
+  };
+  baseConfig.output.publicPath = '//' + conf.devServerHost + ':' + conf.devServerPort + '/';
+  // Source maps
+  baseConfig.devtool = 'inline-source-map';
+};
+
+module.exports = baseConfig;

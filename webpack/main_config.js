@@ -1,42 +1,16 @@
 /* eslint-disable no-var, strict, global-strict */
 /* @flow weak */
 
-'use strict'
+'use strict';
 
-var assign = require('lodash/object/assign')
-var webpackConfig = require('../webpack/base')
+const webpackMerge = require('webpack-merge');
+const baseWebpackConfig = require('./base');
 
-
-module.exports = function(currentEnv) {
-  function isEnv() {
-    return Array.prototype.indexOf.call(arguments, currentEnv) >= 0
+const mainConfig = webpackMerge(baseWebpackConfig, {
+  target: 'electron-main',
+  entry: {
+    main: ['./src/main.js']
   }
+});
 
-  var mainConfig = webpackConfig(currentEnv)
-
-  var mainScripts = ['./src/main/index.js']
-
-  var entryPoints = {
-    main: mainScripts
-  }
-
-  var config = assign(mainConfig, {
-    target: 'electron',
-    entry:  entryPoints,
-    node:   {
-      __dirname:  false,
-      __filename: false
-    },
-    output: isEnv('development') ? {
-      path:              'app/',
-      filename:          '[name].js',
-      sourceMapFilename: '[file].map'
-    } : {
-      path:              'build/',
-      filename:          '[name].js',
-      sourceMapFilename: 'debugging/[file].map'
-    }
-  })
-
-  return config
-}
+module.exports = mainConfig;
