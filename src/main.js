@@ -39,13 +39,6 @@ const createWindow = () => {
     }));
   }
 
-  // when main window is ready
-  /*
-  electron.ipcMain.on('main-window-ready', () => {
-
-  });
-  */
-
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows

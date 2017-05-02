@@ -3,5 +3,5 @@ import './css/app.sass';
 // general polifils
 import 'whatwg-fetch';
 import Promise from 'promise-polyfill';
-// To add to window
+// Add to window
 if (window && !window.Promise) window.Promise = Promise;
