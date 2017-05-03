@@ -57,7 +57,7 @@ const preScripts = {
 
 const preScriptsEnv = conf.isProduction ? preScripts['production'] : preScripts['development'];
 
-const spriteSymbolSvgReg = /sprite\.symbol\.svg$/;
+const spriteSvgReg = /sprite\.symbol\.svg$/;
 
 const rendererConfig = webpackMerge(baseWebpackConfig, {
   target: 'electron-renderer',
@@ -70,7 +70,7 @@ const rendererConfig = webpackMerge(baseWebpackConfig, {
     rules: [
       {
         test: /\.(gif|jpg|png|woff|woff2|eot|ttf|svg|ico)$/,
-        exclude: spriteSymbolSvgReg,
+        exclude: spriteSvgReg,
         use: [{
           loader: 'url-loader',
           options: {
@@ -79,7 +79,7 @@ const rendererConfig = webpackMerge(baseWebpackConfig, {
         }]
       },
       {
-        test: spriteSymbolSvgReg,
+        test: spriteSvgReg,
         use: [
           'html-loader'
         ]
