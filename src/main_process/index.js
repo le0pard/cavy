@@ -1,6 +1,6 @@
 import {app} from 'electron';
 import {appMainMenu} from './menu';
-import {isAllWindowsClosed, createWindow} from './windows';
+import {isAllWindowsClosed, createNewWindow} from './windows';
 import './engines';
 
 // Report crashes to our server.
@@ -10,8 +10,8 @@ import './engines';
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.on('ready', () => {
-  createWindow();
   appMainMenu();
+  createNewWindow();
 });
 
 // Quit when all windows are closed.
@@ -24,5 +24,5 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (isAllWindowsClosed()) createWindow();
+  if (isAllWindowsClosed()) createNewWindow();
 });

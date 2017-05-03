@@ -13,7 +13,7 @@ export const isAllWindowsClosed = () => {
   return 0 === Object.keys(appWindows).length;
 };
 
-export const createWindow = () => {
+export const createNewWindow = () => {
   const windowID = uuid.v4();
 
   const mainWindowState = windowStateKeeper({
