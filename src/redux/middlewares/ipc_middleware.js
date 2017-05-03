@@ -14,7 +14,7 @@ const omitIpcRequest = (ipcUUID) => {
   return _omit(ipcRequestQueue, ipcUUID);
 };
 
-const subscribeToIpcSignals = () => {
+const subscribeToIpcSignals = (dispatch) => {
   const schemas = [
     {
       channel: actionTypes.IPC_SUCCESS_CHANNEL,
@@ -33,7 +33,7 @@ const subscribeToIpcSignals = () => {
       const {ipcUUID} = response;
       if (isHaveIpcRequest(ipcUUID)) {
         dispatch({
-          type: ipcRequestQueue[ipcUUID][ipcKey],
+          type: ipcRequestQueue[ipcUUID][schema.ipcKey],
           [schema.resultKey]: response[schema.resultKey]
         });
         ipcRequestQueue = omitIpcRequest(ipcUUID);
@@ -43,7 +43,7 @@ const subscribeToIpcSignals = () => {
 };
 
 const IpcMiddleware = ({dispatch}) => {
-  subscribeToIpcSignals();
+  subscribeToIpcSignals(dispatch);
 
   return next => action => {
     const {

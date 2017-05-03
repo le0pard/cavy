@@ -3,7 +3,7 @@ import {createStore, applyMiddleware} from 'redux';
 import {createLogger} from 'redux-logger';
 import rootReducer from './root_reducer';
 import {AsyncMiddleware, IpcMiddleware} from './middlewares';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 import {routerMiddleware} from 'react-router-redux';
 
 export const routerHistory = createHistory();

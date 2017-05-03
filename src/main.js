@@ -2,6 +2,7 @@ import path from 'path';
 import url from 'url';
 import {app, BrowserWindow} from 'electron';
 import windowStateKeeper from 'electron-window-state';
+import './engines';
 
 // Report crashes to our server.
 //require('crash-reporter').start();
