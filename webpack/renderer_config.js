@@ -68,12 +68,20 @@ const rendererConfig = webpackMerge(baseWebpackConfig, {
     rules: [
       {
         test: /\.(gif|jpg|png|woff|woff2|eot|ttf|svg|ico)$/,
+        exclude: /symbol\/svg\//,
         use: [{
           loader: 'url-loader',
           options: {
             limit: 10000
           }
         }]
+      },
+      {
+        test: /sprite\.symbol\.svg$/,
+        include: /symbol\/svg\//,
+        use: [
+          'html-loader'
+        ]
       },
       {
         test: /\.scss$/,

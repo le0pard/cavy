@@ -11,6 +11,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 require('./gulp/webpack');
 require('./gulp/eslint');
 require('./gulp/stylelint');
+require('./gulp/svg_sprite');
 
 gulp.task('test', ['eslint', 'stylelint']);
 gulp.task('build', ['webpack:main-build', 'webpack:renderer-build']);
