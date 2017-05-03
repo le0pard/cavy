@@ -1,6 +1,19 @@
 import {app, Menu} from 'electron';
+import {createWindow} from '../windows';
 
 let menuTemplate = [
+  {
+    label: 'File',
+    submenu: [
+      {
+        label: 'New window',
+        accelerator: 'CommandOrControl+N',
+        click: () => {
+          createWindow();
+        }
+      }
+    ]
+  },
   {
     label: 'Edit',
     submenu: [
@@ -55,7 +68,7 @@ if (process.platform === 'darwin') {
   });
 
   // Edit menu
-  menuTemplate[1].submenu.push(
+  menuTemplate[2].submenu.push(
     {type: 'separator'},
     {
       label: 'Speech',
@@ -67,7 +80,7 @@ if (process.platform === 'darwin') {
   );
 
   // Window menu
-  menuTemplate[3].submenu = [
+  menuTemplate[4].submenu = [
     {role: 'close'},
     {role: 'minimize'},
     {role: 'zoom'},
@@ -76,7 +89,7 @@ if (process.platform === 'darwin') {
   ];
 }
 
-export const activateMainMenu = () => {
+export const appMainMenu = () => {
   const menu = Menu.buildFromTemplate(menuTemplate);
   Menu.setApplicationMenu(menu);
 };
