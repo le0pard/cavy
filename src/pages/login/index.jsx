@@ -9,6 +9,7 @@ class Login extends React.Component {
     return (
       <h3>
         <a onClick={() => this.props.actions.dbCredentialsConnect()}>Hello</a>
+        <a className="waves-effect waves-light btn">button</a>
       </h3>
     );
   }

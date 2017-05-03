@@ -93,7 +93,9 @@ const rendererConfig = webpackMerge(baseWebpackConfig, {
             options: {
               indentedSyntax: false,
               sourceMap:      !conf.isProduction,
-              includePaths:   [path.join(__dirname, '..', 'src', 'css')]
+              includePaths:   [
+                path.join(__dirname, '..', 'src', 'css')
+              ]
             }
           })
         })
@@ -107,7 +109,9 @@ const rendererConfig = webpackMerge(baseWebpackConfig, {
             options: {
               indentedSyntax: true,
               sourceMap:      !conf.isProduction,
-              includePaths:   [path.join(__dirname, '..', 'src', 'css')]
+              includePaths:   [
+                path.join(__dirname, '..', 'src', 'css')
+              ]
             }
           })
         })
