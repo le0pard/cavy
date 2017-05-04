@@ -1,5 +1,4 @@
 import assign from 'lodash/assign';
-import _omit from 'lodash/omit';
 import {ipcRenderer, remote} from 'electron';
 import {actionTypes} from 'shared/ipc';
 
