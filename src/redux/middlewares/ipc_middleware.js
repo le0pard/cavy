@@ -1,18 +1,18 @@
-import assign from 'lodash/assign';
 import {ipcRenderer, remote} from 'electron';
-import {actionTypes} from 'shared/ipc';
+import {getIpcActionTypes} from 'shared/ipc';
 
 const winID = remote.getCurrentWindow().id;
+const actionTypes = getIpcActionTypes(winID);
 
 const subscribeToIpcSignals = (dispatch) => {
   const schemas = [
     {
-      channel: `${actionTypes.IPC_SUCCESS_CHANNEL}_${winID}`,
+      channel: actionTypes.IPC_SUCCESS_CHANNEL,
       resultKey: 'result',
       ipcKey: 'ipcSuccess'
     },
     {
-      channel: `${actionTypes.IPC_ERROR_CHANNEL}_${winID}`,
+      channel: actionTypes.IPC_ERROR_CHANNEL,
       resultKey: 'error',
       ipcKey: 'ipcFailure'
     }
@@ -52,16 +52,15 @@ const IpcMiddleware = ({dispatch}) => {
 
     const [ipcRequest, ipcSuccess, ipcFailure] = ipcTypes;
 
-    const newAction = assign({}, rest, {
+    const newAction ={
+      ...rest,
+      type: ipcRequest,
       ipcSuccess,
       ipcFailure
-    });
+    };
 
-    ipcRenderer.send(`${actionTypes.IPC_CHANNEL}_${winID}`, newAction);
-
-    return dispatch(assign({}, rest, {
-      type: ipcRequest
-    }));
+    ipcRenderer.send(actionTypes.IPC_CHANNEL, newAction);
+    return dispatch(newAction);
   };
 };
 

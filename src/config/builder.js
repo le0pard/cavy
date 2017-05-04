@@ -1,7 +1,7 @@
-import assign from 'lodash/assign';
+import _assign from 'lodash/assign';
 
 const builder = (environment) => (config) => {
-  return assign(config.default || {}, config[environment]);
+  return _assign(config.default || {}, config[environment]);
 };
 
 export default builder;

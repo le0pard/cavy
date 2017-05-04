@@ -1,5 +1,3 @@
-import assign from 'lodash/assign';
-
 // example of usage
 // export function loadComments(postId) {
 //   return {
@@ -57,19 +55,22 @@ const AsyncMiddleware = ({dispatch, getState}) => {
 
     const [requestType, successType, failureType] = types;
 
-    dispatch(assign({}, payload, {
+    dispatch({
+      ...payload,
       type: requestType
-    }));
+    });
 
     return callAsync().then(
-      result => dispatch(assign({}, payload, {
+      result => dispatch({
+        ...payload,
         result,
         type: successType
-      })),
-      error => dispatch(assign({}, payload, {
+      }),
+      error => dispatch({
+        ...payload,
         error,
         type: failureType
-      }))
+      })
     );
   };
 };

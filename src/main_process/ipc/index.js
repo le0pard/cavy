@@ -1,14 +1,31 @@
 import {ipcMain} from 'electron';
-import {actionTypes} from 'shared/ipc';
+import {getIpcActionTypes} from 'shared/ipc';
+import {driverResponse} from '../drivers';
 
-const ipcChannelBuss = (winID, event, arg) => {
-  event.sender.send(`${actionTypes.IPC_SUCCESS_CHANNEL}_${winID}`, {...arg, result: 'pong'});
+const initSuccessResponse = ({actionTypes, event, args}) => (result) => {
+  const {ipcSuccess} = args;
+  event.sender.send(actionTypes.IPC_SUCCESS_CHANNEL, {ipcSuccess, result});
+};
+
+const initErrorResponse = ({actionTypes, event, args}) => (error) => {
+  const {ipcFailure} = args;
+  event.sender.send(actionTypes.IPC_ERROR_CHANNEL, {ipcFailure, error});
+};
+
+const handleIpcRequest = ({actionTypes, event, args}) => {
+  const handleSuccessResponse = initSuccessResponse({actionTypes, event, args});
+  const handleErrorResponse = initErrorResponse({actionTypes, event, args});
+  driverResponse({args, handleSuccessResponse, handleErrorResponse});
 };
 
 export const listenIpcChannels = (winID) => {
-  ipcMain.on(`${actionTypes.IPC_CHANNEL}_${winID}`, (event, arg) => ipcChannelBuss(winID, event, arg));
+  const actionTypes = getIpcActionTypes(winID);
+  ipcMain.on(actionTypes.IPC_CHANNEL, (event, args) => {
+    handleIpcRequest({actionTypes, event, args});
+  });
 };
 
 export const removeIpcChannels = (winID) => {
-  ipcMain.removeAllListeners(`${actionTypes.IPC_CHANNEL}_${winID}`);
+  const actionTypes = getIpcActionTypes(winID);
+  ipcMain.removeAllListeners(actionTypes.IPC_CHANNEL);
 };

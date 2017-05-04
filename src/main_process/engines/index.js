@@ -1,7 +1,5 @@
-import {ipcMain} from 'electron';
-import {actionTypes} from 'shared/ipc';
-import pg from 'pg';
 
+/*
 const pool = new pg.Pool({
   host: 'localhost', // Server hosting the postgres database
   port: 5432, //env var: PGPORT
@@ -33,3 +31,4 @@ ipcMain.on(actionTypes.IPC_CHANNEL, (event, arg) => {
   });
 
 });
+*/

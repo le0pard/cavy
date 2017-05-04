@@ -15,7 +15,7 @@ function makeWebpackRunner(builder, config) {
 }
 
 gulp.task('webpack:main-server', ['webpack:main-build'], function() {
-  gulp.watch(['src/**/*'], ['webpack:main-build']);
+  gulp.watch(['src/**/*'], ['webpack:main-build']).on('error', (e) => console.error('Error', e));
 });
 
 gulp.task('webpack:renderer-server', function(done) {

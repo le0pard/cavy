@@ -1,14 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {actions as dbCredentialsActions} from 'containers/db_credentials';
+import {actions as serversActions} from 'containers/servers';
 
-class Login extends React.Component {
-
+class ServerConnect extends React.Component {
   render() {
     return (
       <h3>
-        <a onClick={() => this.props.actions.dbCredentialsConnect()}>Hello</a>
+        <a onClick={() => this.props.actions.serverConnect()}>Hello</a>
         <a className="waves-effect waves-light btn">button</a>
       </h3>
     );
@@ -16,14 +15,14 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  dbCredentials: state.dbCredentials
+  servers: state.servers
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(dbCredentialsActions, dispatch)
+  actions: bindActionCreators(serversActions, dispatch)
 });
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
+)(ServerConnect);
