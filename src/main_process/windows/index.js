@@ -1,6 +1,5 @@
 import path from 'path';
 import url from 'url';
-import uuid from 'node-uuid';
 import _omit from 'lodash/omit';
 import {BrowserWindow} from 'electron';
 import windowStateKeeper from 'electron-window-state';
@@ -11,19 +10,20 @@ import {listenIpcChannels, removeIpcChannels} from '../ipc';
 let appWindows = {};
 
 const createWindowWithID = (options = {}) => {
-  const windowUUID = uuid.v4();
+  const win = new BrowserWindow(options);
+  const windowID = win.id;
   appWindows = {
     ...appWindows,
-    [windowUUID]: new BrowserWindow(options)
+    [windowID]: win
   };
   return {
-    windowUUID,
-    win: appWindows[windowUUID]
+    windowID,
+    win
   };
 };
 
-const removeWindowByID = (windowUUID) => {
-  appWindows = _omit(appWindows, windowUUID);
+const removeWindowByID = (windowID) => {
+  appWindows = _omit(appWindows, windowID);
 };
 
 export const isAllWindowsClosed = () => {
@@ -36,7 +36,7 @@ export const createNewWindow = () => {
     defaultHeight: 640
   });
 
-  const {windowUUID, win} = createWindowWithID({
+  const {windowID, win} = createWindowWithID({
     x: mainWindowState.x,
     y: mainWindowState.y,
     width: mainWindowState.width,
@@ -45,8 +45,7 @@ export const createNewWindow = () => {
 
   mainWindowState.manage(win);
 
-  const winID = win.id;
-  listenIpcChannels(winID);
+  listenIpcChannels(windowID);
 
   // and load the index.html of the app.
   if (process.env.CAVY_DEV) {
@@ -65,9 +64,9 @@ export const createNewWindow = () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
-    removeIpcChannels(winID);
-    removeWindowByID(windowUUID);
+    removeIpcChannels(windowID);
+    removeWindowByID(windowID);
   });
 
-  return {windowUUID, win};
+  return {windowID, win};
 };
