@@ -2,19 +2,18 @@ import {ipcMain} from 'electron';
 import {getIpcActionTypes} from 'shared/ipc';
 import {driverResponse} from '../drivers';
 
-const initSuccessResponse = ({actionTypes, event, args}) => (result) => {
-  const {ipcSuccess} = args;
+const initSuccessResponse = ({actionTypes, event, ipcSuccess}) => (result) => {
   event.sender.send(actionTypes.IPC_SUCCESS_CHANNEL, {ipcSuccess, result});
 };
 
-const initErrorResponse = ({actionTypes, event, args}) => (error) => {
-  const {ipcFailure} = args;
+const initErrorResponse = ({actionTypes, event, ipcFailure}) => (error) => {
   event.sender.send(actionTypes.IPC_ERROR_CHANNEL, {ipcFailure, error});
 };
 
 const handleIpcRequest = ({winID, actionTypes, event, args}) => {
-  const handleSuccessResponse = initSuccessResponse({actionTypes, event, args});
-  const handleErrorResponse = initErrorResponse({actionTypes, event, args});
+  const {ipcSuccess, ipcFailure} = args;
+  const handleSuccessResponse = initSuccessResponse({actionTypes, event, ipcSuccess});
+  const handleErrorResponse = initErrorResponse({actionTypes, event, ipcFailure});
   driverResponse({args, winID, handleSuccessResponse, handleErrorResponse});
 };
 
