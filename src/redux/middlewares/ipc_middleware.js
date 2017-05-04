@@ -1,28 +1,19 @@
 import assign from 'lodash/assign';
 import _omit from 'lodash/omit';
-import {ipcRenderer} from 'electron';
-import uuid from 'node-uuid';
+import {ipcRenderer, remote} from 'electron';
 import {actionTypes} from 'shared/ipc';
 
-let ipcRequestQueue = {};
-
-const isHaveIpcRequest = (ipcUUID) => {
-  return typeof ipcRequestQueue[ipcUUID] !== 'undefined';
-};
-
-const omitIpcRequest = (ipcUUID) => {
-  return _omit(ipcRequestQueue, ipcUUID);
-};
+const winID = remote.getCurrentWindow().id;
 
 const subscribeToIpcSignals = (dispatch) => {
   const schemas = [
     {
-      channel: actionTypes.IPC_SUCCESS_CHANNEL,
+      channel: `${actionTypes.IPC_SUCCESS_CHANNEL}_${winID}`,
       resultKey: 'result',
       ipcKey: 'ipcSuccess'
     },
     {
-      channel: actionTypes.IPC_ERROR_CHANNEL,
+      channel: `${actionTypes.IPC_ERROR_CHANNEL}_${winID}`,
       resultKey: 'error',
       ipcKey: 'ipcFailure'
     }
@@ -30,14 +21,10 @@ const subscribeToIpcSignals = (dispatch) => {
 
   schemas.forEach((schema) => {
     ipcRenderer.on(schema.channel, (event, response) => {
-      const {ipcUUID} = response;
-      if (isHaveIpcRequest(ipcUUID)) {
-        dispatch({
-          type: ipcRequestQueue[ipcUUID][schema.ipcKey],
-          [schema.resultKey]: response[schema.resultKey]
-        });
-        ipcRequestQueue = omitIpcRequest(ipcUUID);
-      }
+      dispatch({
+        type: response[schema.ipcKey],
+        [schema.resultKey]: response[schema.resultKey]
+      });
     });
   });
 };
@@ -66,18 +53,12 @@ const IpcMiddleware = ({dispatch}) => {
 
     const [ipcRequest, ipcSuccess, ipcFailure] = ipcTypes;
 
-    const ipcUUID = uuid.v4();
-    const newAction = assign({}, rest, {ipcUUID});
+    const newAction = assign({}, rest, {
+      ipcSuccess,
+      ipcFailure
+    });
 
-    ipcRequestQueue = {
-      ...ipcRequestQueue,
-      [ipcUUID]: {
-        ipcSuccess,
-        ipcFailure
-      }
-    };
-
-    ipcRenderer.send(actionTypes.IPC_CHANNEL, newAction);
+    ipcRenderer.send(`${actionTypes.IPC_CHANNEL}_${winID}`, newAction);
 
     return dispatch(assign({}, rest, {
       type: ipcRequest

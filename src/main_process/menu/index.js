@@ -1,5 +1,5 @@
 import {app, Menu} from 'electron';
-import {createWindow} from '../windows';
+import {createNewWindow} from '../windows';
 
 let menuTemplate = [
   {
@@ -9,7 +9,7 @@ let menuTemplate = [
         label: 'New window',
         accelerator: 'CommandOrControl+N',
         click: () => {
-          createWindow();
+          createNewWindow();
         }
       }
     ]

@@ -1,7 +1,6 @@
 import {app} from 'electron';
 import {appMainMenu} from './menu';
 import {isAllWindowsClosed, createNewWindow} from './windows';
-import './engines';
 
 // Report crashes to our server.
 //require('crash-reporter').start();
