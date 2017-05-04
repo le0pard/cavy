@@ -52,7 +52,7 @@ const IpcMiddleware = ({dispatch}) => {
 
     const [ipcRequest, ipcSuccess, ipcFailure] = ipcTypes;
 
-    const newAction ={
+    const newAction = {
       ...rest,
       type: ipcRequest,
       ipcSuccess,
