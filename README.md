@@ -5,7 +5,7 @@ Cavy is SQL manager for PostgreSQL.
 ## Dev run
 
 ```bash
-$ gulp start
+$ npm start
 # in separate console
 $ CAVY_DEV=true ./node_modules/.bin/electron build
 ```
@@ -13,5 +13,5 @@ $ CAVY_DEV=true ./node_modules/.bin/electron build
 ## Build
 
 ```bash
-$ NODE_ENV=production gulp build
+$ NODE_ENV=production npm run release
 ```

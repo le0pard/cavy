@@ -14,5 +14,5 @@ require('./gulp/stylelint');
 require('./gulp/svg_sprite');
 
 gulp.task('test', ['eslint', 'stylelint']);
-gulp.task('build', ['webpack:main-build', 'webpack:renderer-build']);
+gulp.task('release', ['webpack:main-build', 'webpack:renderer-build']);
 gulp.task('start', ['webpack:renderer-server', 'webpack:main-server']);
