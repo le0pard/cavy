@@ -5,6 +5,8 @@ import Header from 'components/header';
 import LeftSidebar from 'components/left_sidebar';
 import RightSidebar from 'components/right_sidebar';
 
+import './app.sass';
+
 class App extends React.Component {
   static propTypes = {
     route: PropTypes.shape({
@@ -21,7 +23,7 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <div>
+        <div className="app-block">
           <div className="wrapper">
             <LeftSidebar />
             <div id="content">{renderRoutes(route.routes)}</div>

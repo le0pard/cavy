@@ -1,9 +1,11 @@
 import React from 'react';
 
+import './index.sass';
+
 class Header extends React.Component {
   render() {
     return (
-      <header id="header" className="page-topbar">
+      <header className="header">
         <div className="navbar-fixed">
           <nav>
             <div className="nav-wrapper">

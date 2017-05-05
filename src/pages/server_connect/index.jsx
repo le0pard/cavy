@@ -8,7 +8,7 @@ class ServerConnect extends React.Component {
     return (
       <h3>
         <a onClick={() => this.props.actions.serverConnect()}>Hello</a>
-        <a className="waves-effect waves-light btn">button</a>
+        <a className="btn">button</a>
       </h3>
     );
   }
