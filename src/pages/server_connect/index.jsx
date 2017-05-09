@@ -2,14 +2,15 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {actions as serversActions} from 'containers/servers';
+import Sqlite3ServerConnect from './sqlite3';
 
 class ServerConnect extends React.Component {
+
   render() {
     return (
-      <h3>
-        <a onClick={() => this.props.actions.serverConnect()}>Hello</a>
-        <a className="btn">button</a>
-      </h3>
+      <div>
+        <Sqlite3ServerConnect />
+      </div>
     );
   }
 }
