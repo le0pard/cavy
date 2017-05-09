@@ -10,14 +10,18 @@ export const connectToServer = ({args, winID, handleSuccessResponse, handleError
       return handleSuccessResponse({pong: 124});
     }
     case SQLITE_TYPE: {
-      const {filepath} = args;
-      return connectToSqliteServer(filepath).then((db) => {
+      const {pathname} = args;
+      return connectToSqliteServer(pathname).then(({databases, extension}) => {
+        const result = {
+          pathname,
+          databases,
+          extension
+        };
         serverConnections = {
           ...serverConnections,
-          [winID]: db
+          [winID]: result
         };
-        const dbName = path.basename(filepath, path.extname(filepath));
-        return handleSuccessResponse({databases: [dbName]});
+        return handleSuccessResponse(result);
       }).catch((error) => {
         return handleErrorResponse(error);
       });

@@ -1,25 +1,29 @@
+import fs from 'fs';
+import path from 'path';
 import sqlite3 from 'sqlite3';
+import _endsWith from 'lodash/endsWith';
+import _filter from 'lodash/filter';
 
-export const createSqliteDatabase = (path) => {
+export const connectToSqliteServer = (pathname, extension = 'sqlite3') => {
   return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(path, sqlite3.OPEN_CREATE, (error) => {
-      if (error) {
+    fs.readdir(pathname, (err, files) => {
+      if (err) {
         reject(error);
-      } else {
-        resolve(db);
       }
-    });
-  });
-};
+      const databases = _filter(files, (file) => {
+        return _endsWith(file, extension)
+      }).map((file) => {
+        return path.parse(file).name;
+      });
 
-export const connectToSqliteServer = (path) => {
-  return new Promise((resolve, reject) => {
-    const db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (error) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(db);
-      }
+      resolve({databases, extension});
     });
+    // const db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (error) => {
+    //   if (error) {
+    //     reject(error);
+    //   } else {
+    //     resolve(db);
+    //   }
+    // });
   });
 };
