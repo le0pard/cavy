@@ -1,7 +1,7 @@
-import {actionTypes as serversActionTypes} from './servers';
+import {actionTypes as credentialsActionTypes} from './credentials';
 
 const actionTypes = {
-  ...serversActionTypes
+  ...credentialsActionTypes
 };
 
 export default actionTypes;

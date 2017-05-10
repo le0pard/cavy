@@ -26,7 +26,9 @@ class App extends React.Component {
         <div className="app-block">
           <div className="wrapper">
             <LeftSidebar />
-            <div id="content">{renderRoutes(route.routes)}</div>
+            <div id="content">
+              {renderRoutes(route.routes)}
+            </div>
             <RightSidebar />
           </div>
         </div>

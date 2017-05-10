@@ -4,6 +4,7 @@ import _omit from 'lodash/omit';
 import {BrowserWindow} from 'electron';
 import windowStateKeeper from 'electron-window-state';
 import {listenIpcChannels, removeIpcChannels} from '../ipc';
+import {provideInitialState, removeDatabaseConnection} from '../databases';
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -45,6 +46,7 @@ export const createNewWindow = () => {
 
   mainWindowState.manage(win);
 
+  provideInitialState(windowID);
   listenIpcChannels(windowID);
 
   // and load the index.html of the app.
@@ -64,6 +66,7 @@ export const createNewWindow = () => {
     // Dereference the window object, usually you would store windows
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
+    removeDatabaseConnection(windowID);
     removeIpcChannels(windowID);
     removeWindowByID(windowID);
   });
