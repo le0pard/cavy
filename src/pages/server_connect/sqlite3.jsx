@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {actions as credentialsActions} from 'containers/credentials';
 import {remote} from 'electron';
+import {SQLITE_TYPE} from 'shared/constants';
 
 const {dialog} = remote;
 
@@ -13,7 +14,8 @@ class Sqlite3ServerConnect extends React.Component {
       folder: PropTypes.string
     }),
     actions: PropTypes.shape({
-      selectSqliteFolder: PropTypes.func.isRequired
+      selectSqliteFolder: PropTypes.func.isRequired,
+      connectToServer: PropTypes.func.isRequired
     }).isRequired
   }
 
@@ -22,7 +24,9 @@ class Sqlite3ServerConnect extends React.Component {
 
     const {folder} = this.props.sqlite;
     if (folder) {
-      console.log('folder', folder);
+      this.props.actions.connectToServer(SQLITE_TYPE, {
+        folder
+      });
     }
   }
 

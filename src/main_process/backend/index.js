@@ -3,7 +3,7 @@ import {connectToServer} from './servers';
 
 export const backendResponse = ({args, winID, handleSuccessResponse, handleErrorResponse}) => {
   switch (args.type) {
-    case actionTypes.SERVERS_CONNECT_REQUEST: {
+    case actionTypes.CREDENTIALS_CONNECT_REQUEST: {
       return connectToServer({args, winID, handleSuccessResponse, handleErrorResponse});
     }
     default: {

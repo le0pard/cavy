@@ -1,7 +1,7 @@
-export const getIpcOnAppLoad = (winID) => {
+export const getIpcOnRendererLoad = (winID) => {
   return {
-    IPC_LOADED_APP_REQUEST:  `IPC_LOADED_APP_REQUEST_${winID}`, // channel for ipc
-    IPC_LOADED_APP_RESPONSE: `IPC_LOADED_APP_RESPONSE_${winID}` // reply success channel for ipc
+    IPC_RENDERER_LOADED_REQUEST:  `IPC_RENDERER_LOADED_REQUEST_${winID}`, // channel for ipc
+    IPC_RENDERER_LOADED_RESPONSE: `IPC_RENDERER_LOADED_RESPONSE_${winID}` // reply success channel for ipc
   };
 };
 

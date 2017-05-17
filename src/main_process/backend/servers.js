@@ -1,19 +1,19 @@
 import path from 'path';
-import {PG_TYPE, SQLITE_TYPE} from 'shared/constants';
+import {TYPE_KEY, PG_TYPE, SQLITE_TYPE} from 'shared/constants';
 import {connectToSqliteServer} from '../drivers/sqlite3';
 
 let serverConnections = {};
 
 export const connectToServer = ({args, winID, handleSuccessResponse, handleErrorResponse}) => {
-  switch (args.dbType) {
+  switch (args[TYPE_KEY]) {
     case PG_TYPE: {
-      return handleSuccessResponse({pong: 124});
+      return handleSuccessResponse({});
     }
     case SQLITE_TYPE: {
-      const {pathname} = args;
-      return connectToSqliteServer(pathname).then(({databases, extension}) => {
+      const {folder} = args.params;
+      return connectToSqliteServer(folder).then(({databases, extension}) => {
         const result = {
-          pathname,
+          folder,
           databases,
           extension
         };
@@ -27,7 +27,7 @@ export const connectToServer = ({args, winID, handleSuccessResponse, handleError
       });
     }
     default: {
-      return handleSuccessResponse({pong: 234});
+      return handleSuccessResponse({pong: true});
     }
   }
 };

@@ -1,10 +1,10 @@
 import {ipcMain} from 'electron';
-import {getIpcOnAppLoad} from 'shared/ipc';
+import {getIpcOnRendererLoad} from 'shared/ipc';
 import _omit from 'lodash/omit';
 
 let connectedDatabases = {};
 
-export const getDatabaseConnection = (windowID) => {
+const getDatabaseConnection = (windowID) => {
   return connectedDatabases[windowID];
 };
 
@@ -15,18 +15,23 @@ export const storeDatabaseConnection = (windowID, connection) => {
   };
 };
 
-export const removeDatabaseConnection = (windowID) => {
+const removeDatabaseConnection = (windowID) => {
   const connection = getDatabaseConnection(windowID);
   if (connection) {
     connectedDatabases = _omit(connectedDatabases, windowID);
   }
 };
 
-export const provideInitialState = (windowID) => {
-  const actionTypes = getIpcOnAppLoad(windowID);
+export const initRenderListener = (windowID) => {
+  const actionTypes = getIpcOnRendererLoad(windowID);
 
-  ipcMain.on(actionTypes.IPC_LOADED_APP_REQUEST, (event) => {
-    event.sender.send(actionTypes.IPC_LOADED_APP_RESPONSE, {});
-    ipcMain.removeAllListeners(actionTypes.IPC_LOADED_APP_REQUEST);
+  ipcMain.on(actionTypes.IPC_RENDERER_LOADED_REQUEST, (event) => {
+    event.sender.send(actionTypes.IPC_RENDERER_LOADED_RESPONSE, {});
   });
+};
+
+export const cleanupRenderListener = (windowID) => {
+  const actionTypes = getIpcOnRendererLoad(windowID);
+  ipcMain.removeAllListeners(actionTypes.IPC_RENDERER_LOADED_REQUEST);
+  removeDatabaseConnection(windowID);
 };

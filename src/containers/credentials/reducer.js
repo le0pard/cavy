@@ -22,6 +22,15 @@ const reducer = (state = initialState, action) => {
         }
       };
     }
+    case actionTypes.CREDENTIALS_CONNECT_REQUEST_SUCCESS: {
+      const {result: {databases}} = action;
+      return {
+        ...state,
+        connection: {
+          databases
+        }
+      };
+    }
     default:
       return state;
   }
