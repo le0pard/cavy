@@ -1,5 +1,11 @@
 {
   "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
   "rules": {
     "array-bracket-spacing": 2,
     "brace-style": [2, "1tbs", {"allowSingleLine": true}],
@@ -140,8 +146,5 @@
   "plugins": [
     "react",
     "import"
-  ],
-  "ecmaFeatures": {
-    "jsx": true
-  }
+  ]
 }
