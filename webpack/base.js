@@ -52,6 +52,7 @@ let baseConfig = {
 if (conf.isProduction) {
   baseConfig.plugins.push(
     new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compressor: {warnings: false},
       sourceMap: false,
