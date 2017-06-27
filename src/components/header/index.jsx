@@ -42,11 +42,6 @@ class Header extends React.Component {
                   {connection && this.renderDatabaseSelector()}
                 </li>
               </ul>
-              <ul className="right hide-on-med-and-down">
-                <li><a href="#">Sass</a></li>
-                <li><a href="#">Components</a></li>
-                <li><a href="#">JavaScript</a></li>
-              </ul>
             </div>
           </nav>
         </div>

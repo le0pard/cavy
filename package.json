@@ -44,7 +44,6 @@
     "html-loader": "^0.4.5",
     "html-webpack-plugin": "2.29.0",
     "lodash": "^4.17.4",
-    "materialize-css": "0.99.0",
     "moment": "^2.18.1",
     "node-sass": "4.5.3",
     "normalize.css": "7.0.0",

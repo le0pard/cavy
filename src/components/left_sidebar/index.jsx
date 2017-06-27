@@ -14,9 +14,6 @@ class LeftSidebar extends React.Component {
             </a>
           </li>
         </ul>
-        <a className="left-sidebar-nav__menu btn-floating btn-medium hide-on-large-only">
-          <SvgSprite name="navicon" className="left-sidebar-nav__menu-icon" />
-        </a>
       </div>
     );
   }
