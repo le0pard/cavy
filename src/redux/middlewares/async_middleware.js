@@ -60,7 +60,7 @@ const AsyncMiddleware = ({dispatch, getState}) => {
       type: requestType
     });
 
-    return callAsync().then(
+    return callAsync(getState()).then(
       result => dispatch({
         ...payload,
         result,

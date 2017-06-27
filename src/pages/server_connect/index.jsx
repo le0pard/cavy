@@ -2,14 +2,14 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {actions as credentialsActions} from 'containers/credentials';
-import Sqlite3ServerConnect from './sqlite3';
+import SqliteServerConnect from './sqlite';
 
 class ServerConnect extends React.Component {
 
   render() {
     return (
       <div>
-        <Sqlite3ServerConnect />
+        <SqliteServerConnect />
       </div>
     );
   }

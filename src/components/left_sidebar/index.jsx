@@ -6,8 +6,8 @@ import './index.sass';
 class LeftSidebar extends React.Component {
   render() {
     return (
-      <aside className="left-sidebar-nav">
-        <ul id="slide-out" className="left-sidebar-nav__list side-nav fixed leftside-navigation ps-container ps-active-y">
+      <div className="left-sidebar-nav">
+        <ul className="left-sidebar-nav__list">
           <li>
             <a href="index.html">
               <i className="mdi-action-dashboard"></i> Tables
@@ -17,7 +17,7 @@ class LeftSidebar extends React.Component {
         <a className="left-sidebar-nav__menu btn-floating btn-medium hide-on-large-only">
           <SvgSprite name="navicon" className="left-sidebar-nav__menu-icon" />
         </a>
-      </aside>
+      </div>
     );
   }
 }

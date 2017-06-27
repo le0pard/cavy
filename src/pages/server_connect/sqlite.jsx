@@ -8,7 +8,7 @@ import {SQLITE_TYPE} from 'shared/constants';
 
 const {dialog} = remote;
 
-class Sqlite3ServerConnect extends React.Component {
+class SqliteServerConnect extends React.Component {
   static propTypes = {
     sqlite: PropTypes.shape({
       folder: PropTypes.string
@@ -78,4 +78,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Sqlite3ServerConnect);
+)(SqliteServerConnect);

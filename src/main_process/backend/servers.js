@@ -1,5 +1,5 @@
 import {TYPE_KEY, PG_TYPE, SQLITE_TYPE} from 'shared/constants';
-import {connectToSqliteServer} from '../drivers/sqlite3';
+import {connectToSqliteServer} from '../drivers/sqlite';
 
 let serverConnections = {};
 
