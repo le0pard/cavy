@@ -1,5 +1,5 @@
 import App from './pages/app';
-import ServerDashboard from './pages/server_dashboard';
+import ServerConnect from './pages/server_connect';
 
 // routes
 export const routes = [{
@@ -7,6 +7,6 @@ export const routes = [{
   routes: [{
     path: '/',
     exact: true,
-    component: ServerDashboard
+    component: ServerConnect
   }]
 }];

@@ -5,13 +5,8 @@ import {actions as credentialsActions} from 'containers/credentials';
 import ServerConnect from 'pages/server_connect';
 
 class ServerDashboard extends React.Component {
-
   render() {
-    return (
-      <div>
-        <ServerConnect />
-      </div>
-    );
+    return (<div/>);
   }
 }
 

@@ -5,7 +5,6 @@ import {actions as credentialsActions} from 'containers/credentials';
 import SqliteServerConnect from './sqlite';
 
 class ServerConnect extends React.Component {
-
   render() {
     return (
       <div>
