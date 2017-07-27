@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {renderRoutes} from 'react-router-config';
 import Header from 'components/header';
 import LeftSidebar from 'components/left_sidebar';
-import RightSidebar from 'components/right_sidebar';
 
 import './app.sass';
 
@@ -23,14 +22,9 @@ class App extends React.Component {
     return (
       <div>
         <Header />
-        <div className="app-block">
-          <div className="wrapper">
-            <LeftSidebar />
-            <div id="content">
-              {renderRoutes(route.routes)}
-            </div>
-            <RightSidebar />
-          </div>
+        <div>
+          <LeftSidebar />
+          {renderRoutes(route.routes)}
         </div>
       </div>
     );

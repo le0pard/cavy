@@ -1,20 +1,42 @@
 import React from 'react';
-import SvgSprite from 'components/svg_sprite';
+import Drawer from 'material-ui/Drawer';
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import InboxIcon from 'material-ui-icons/Inbox';
 
 import './index.sass';
 
 class LeftSidebar extends React.Component {
   render() {
     return (
-      <div className="left-sidebar-nav">
-        <ul className="left-sidebar-nav__list">
-          <li>
-            <a href="index.html">
-              <i className="mdi-action-dashboard"></i> Tables
-            </a>
-          </li>
-        </ul>
-      </div>
+      <Drawer
+        anchor="left"
+        open={false}
+        docked={true}
+        keepMounted={true}
+        onRequestClose={() => null}
+        onClick={() => null}
+      >
+        <div>
+          <List disablePadding={true}>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Inbox" />
+            </ListItem>
+          </List>
+          <Divider />
+          <List disablePadding={true}>
+            <ListItem button={true}>
+              <ListItemIcon>
+                <InboxIcon />
+              </ListItemIcon>
+              <ListItemText primary="Inbox" />
+            </ListItem>
+          </List>
+        </div>
+      </Drawer>
     );
   }
 }
