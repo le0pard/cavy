@@ -1,2 +1,2 @@
-export const PG_TYPE = 'PG_TYPE';
-export const SQLITE_TYPE = 'SQLITE_TYPE';
+export const PG_TYPE = 'PG';
+export const SQLITE_TYPE = 'SQLITE';

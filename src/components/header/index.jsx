@@ -1,6 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {actions as credentialsActions} from 'containers/sqlite/credentials';
@@ -31,18 +37,18 @@ class Header extends React.Component {
     const {credentials: {databases}} = this.props;
 
     return (
-      <header className="header">
-        <div className="navbar-fixed">
-          <nav>
-            <div className="nav-wrapper">
-              <ul>
-                <li>
-                  {databases && this.renderDatabaseSelector(databases)}
-                </li>
-              </ul>
-            </div>
-          </nav>
-        </div>
+      <header>
+        <AppBar position="static">
+          <Toolbar>
+            <IconButton color="contrast" aria-label="Menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography type="title" color="inherit">
+              {databases && this.renderDatabaseSelector(databases)}
+            </Typography>
+            <Button color="contrast">Login</Button>
+          </Toolbar>
+        </AppBar>
       </header>
     );
   }

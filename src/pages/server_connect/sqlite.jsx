@@ -59,7 +59,9 @@ class SqliteServerConnect extends React.Component {
       <div>
         <h3>Sqlite3</h3>
         <form onSubmit={this.handleOnSubmit.bind(this)}>
-          <a className="btn" onClick={this.handleOnSelectFolder.bind(this)}>Select directory</a>
+          <Button raised={true} color="accent" onClick={this.handleOnSelectFolder.bind(this)}>
+            Select directory
+          </Button>
           <p>{folder}</p>
           <Button raised={true} color="primary" type="submit">
             Connect

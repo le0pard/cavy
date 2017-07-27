@@ -1,5 +1,5 @@
 import actionTypes from 'containers/action_types';
-import {connectToSqliteServer} from './servers';
+import {connectToSqliteServer} from './sqlite';
 
 export const backendResponse = ({args, winID, handleSuccessResponse, handleErrorResponse}) => {
   switch (args.type) {

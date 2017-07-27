@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {actions as credentialsActions} from 'containers/sqlite/credentials';
 import SqliteServerConnect from './sqlite';
 
 class ServerConnect extends React.Component {
@@ -14,13 +12,9 @@ class ServerConnect extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  credentials: state.credentials
-});
+const mapStateToProps = () => ({});
 
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(credentialsActions, dispatch)
-});
+const mapDispatchToProps = () => ({});
 
 export default connect(
   mapStateToProps,

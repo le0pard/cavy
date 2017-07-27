@@ -4,7 +4,7 @@ import _omit from 'lodash/omit';
 
 let connectedDatabases = {};
 
-const getDatabaseConnection = (windowID) => {
+export const getDatabaseConnection = (windowID) => {
   return connectedDatabases[windowID];
 };
 
@@ -15,18 +15,19 @@ export const storeDatabaseConnection = (windowID, connection) => {
   };
 };
 
-const removeDatabaseConnection = (windowID) => {
-  const connection = getDatabaseConnection(windowID);
-  if (connection) {
-    connectedDatabases = _omit(connectedDatabases, windowID);
-  }
+export const removeDatabaseConnection = (windowID) => {
+  connectedDatabases = _omit(connectedDatabases, windowID);
+  return connectedDatabases;
 };
 
 export const initRenderListener = (windowID) => {
   const actionTypes = getIpcOnRendererLoad(windowID);
 
   ipcMain.on(actionTypes.IPC_RENDERER_LOADED_REQUEST, (event) => {
-    event.sender.send(actionTypes.IPC_RENDERER_LOADED_RESPONSE, {});
+    event.sender.send(
+      actionTypes.IPC_RENDERER_LOADED_RESPONSE,
+      {}
+    );
   });
 };
 
