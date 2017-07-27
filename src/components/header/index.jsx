@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import {withStyles, createStyleSheet} from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -13,8 +14,20 @@ import {actions as credentialsActions} from 'containers/sqlite/credentials';
 
 import './index.sass';
 
+const styleSheet = createStyleSheet('Header', theme => ({
+  appBar: {
+    transition: theme.transitions.create('width'),
+  },
+  [theme.breakpoints.up('lg')]: {
+    appBarShift: {
+      width: 'calc(100% - 250px)',
+    }
+  }
+}));
+
 class Header extends React.Component {
   static propTypes = {
+    classes: PropTypes.object.isRequired,
     credentials: PropTypes.shape({
       databases: PropTypes.arrayOf(PropTypes.string)
     })
@@ -34,11 +47,11 @@ class Header extends React.Component {
   }
 
   render() {
-    const {credentials: {databases}} = this.props;
+    const {classes, credentials: {databases}} = this.props;
 
     return (
       <header>
-        <AppBar position="static">
+        <AppBar className={`${classes.appBar} ${classes.appBarShift}`}>
           <Toolbar>
             <IconButton color="contrast" aria-label="Menu">
               <MenuIcon />
@@ -62,7 +75,7 @@ const mapDispatchToProps = (dispatch) => ({
   actions: bindActionCreators(credentialsActions, dispatch)
 });
 
-export default connect(
+export default withStyles(styleSheet)(connect(
   mapStateToProps,
   mapDispatchToProps
-)(Header);
+)(Header));
