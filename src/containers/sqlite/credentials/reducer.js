@@ -1,34 +1,25 @@
 import actionTypes from './action_types';
 
 const initialState = {
-  sqlite: {
-    folder: null,
-    extension: 'sqlite3'
-  },
-  pg: {},
-  servers: [],
-  connection: null
+  folder: null,
+  extension: 'sqlite3',
+  databases: null
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.CREDENTIALS_SQLITE_SELECT_FOLDER: {
+    case actionTypes.SQLITE_CREDENTIALS_SELECT_FOLDER: {
       const {folder} = action;
       return {
         ...state,
-        sqlite: {
-          ...state.sqlite,
-          folder
-        }
+        folder
       };
     }
-    case actionTypes.CREDENTIALS_CONNECT_REQUEST_SUCCESS: {
+    case actionTypes.SQLITE_CREDENTIALS_CONNECT_REQUEST_SUCCESS: {
       const {result: {databases}} = action;
       return {
         ...state,
-        connection: {
-          databases
-        }
+        databases
       };
     }
     default:

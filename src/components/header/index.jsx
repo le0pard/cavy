@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {actions as credentialsActions} from 'containers/credentials';
+import {actions as credentialsActions} from 'containers/sqlite/credentials';
 
 import './index.sass';
 
 class Header extends React.Component {
   static propTypes = {
-    connection: PropTypes.shape({
+    credentials: PropTypes.shape({
       databases: PropTypes.arrayOf(PropTypes.string)
     })
   }
 
-  renderDatabaseSelector() {
-    const {connection: {databases}} = this.props;
-
+  renderDatabaseSelector(databases) {
     const selectorDatabases = databases.map((database) => {
       return {
         label: database,
@@ -30,7 +28,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const {connection} = this.props;
+    const {credentials: {databases}} = this.props;
 
     return (
       <header className="header">
@@ -39,7 +37,7 @@ class Header extends React.Component {
             <div className="nav-wrapper">
               <ul>
                 <li>
-                  {connection && this.renderDatabaseSelector()}
+                  {databases && this.renderDatabaseSelector(databases)}
                 </li>
               </ul>
             </div>
@@ -51,7 +49,7 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  connection: state.credentials.connection
+  credentials: state.sqlite.credentials
 });
 
 const mapDispatchToProps = (dispatch) => ({

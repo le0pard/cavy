@@ -4,7 +4,7 @@ import sqlite3 from 'sqlite3';
 import _endsWith from 'lodash/endsWith';
 import _filter from 'lodash/filter';
 
-export const connectToSqliteServer = (folder, extension = 'sqlite3') => {
+export const connectToServer = (folder, extension = 'sqlite3') => {
   return new Promise((resolve, reject) => {
     fs.readdir(folder, (err, files) => {
       if (err) {

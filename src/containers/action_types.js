@@ -1,7 +1,7 @@
-import {actionTypes as credentialsActionTypes} from './credentials';
+import {actionTypes as sqliteActionTypes} from './sqlite';
 
 const actionTypes = {
-  ...credentialsActionTypes
+  ...sqliteActionTypes
 };
 
 export default actionTypes;

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {actions as credentialsActions} from 'containers/credentials';
+import {actions as credentialsActions} from 'containers/sqlite/credentials';
 import SqliteServerConnect from './sqlite';
 
 class ServerConnect extends React.Component {

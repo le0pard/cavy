@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {actions as credentialsActions} from 'containers/credentials';
+import {actions as credentialsActions} from 'containers/sqlite/credentials';
 import Button from 'material-ui/Button';
 import {remote} from 'electron';
 import {SQLITE_TYPE} from 'shared/constants';
@@ -11,7 +11,7 @@ const {dialog} = remote;
 
 class SqliteServerConnect extends React.Component {
   static propTypes = {
-    sqlite: PropTypes.shape({
+    credentials: PropTypes.shape({
       folder: PropTypes.string
     }),
     actions: PropTypes.shape({
@@ -23,9 +23,9 @@ class SqliteServerConnect extends React.Component {
   handleOnSubmit(e) {
     e.preventDefault();
 
-    const {folder} = this.props.sqlite;
+    const {folder} = this.props.credentials;
     if (folder) {
-      this.props.actions.connectToServer(SQLITE_TYPE, {
+      this.props.actions.connectToServer({
         folder
       });
     }
@@ -53,7 +53,7 @@ class SqliteServerConnect extends React.Component {
   }
 
   render() {
-    const {sqlite: {folder}} = this.props;
+    const {credentials: {folder}} = this.props;
 
     return (
       <div>
@@ -71,7 +71,7 @@ class SqliteServerConnect extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  sqlite: state.credentials.sqlite
+  credentials: state.sqlite.credentials
 });
 
 const mapDispatchToProps = (dispatch) => ({
