@@ -16,7 +16,13 @@ export const storeDatabaseConnection = (windowID, connection) => {
 };
 
 export const removeDatabaseConnection = (windowID) => {
-  connectedDatabases = _omit(connectedDatabases, windowID);
+  const database = getDatabaseConnection(windowID);
+  if (database) {
+    if (database.connection) {
+      database.connection.close();
+    }
+    connectedDatabases = _omit(connectedDatabases, windowID);
+  }
   return connectedDatabases;
 };
 

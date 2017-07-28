@@ -13,3 +13,12 @@ export const connectToServer = (params) => ({
   ],
   params
 });
+
+export const connectToDatabase = (databaseName) => ({
+  ipcTypes: [
+    actionTypes.SQLITE_CREDENTIALS_DATABASE_REQUEST,
+    actionTypes.SQLITE_CREDENTIALS_DATABASE_REQUEST_SUCCESS,
+    actionTypes.SQLITE_CREDENTIALS_DATABASE_REQUEST_ERROR
+  ],
+  databaseName
+});

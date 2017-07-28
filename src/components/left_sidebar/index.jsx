@@ -45,25 +45,25 @@ class LeftSidebar extends React.Component {
         onRequestClose={() => null}
         onClick={() => null}
       >
-      <div className={classes.nav}>
-        <Toolbar className={classes.toolbar}>
-          <List disablePadding={true}>
-            <ListItem button={true}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItem>
-          </List>
-          <Divider />
-          <List disablePadding={true}>
-            <ListItem button={true}>
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItem>
-          </List>
+        <div className={classes.nav}>
+          <Toolbar className={classes.toolbar}>
+            <List disablePadding={true}>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+            </List>
+            <Divider />
+            <List disablePadding={true}>
+              <ListItem button={true}>
+                <ListItemIcon>
+                  <InboxIcon />
+                </ListItemIcon>
+                <ListItemText primary="Inbox" />
+              </ListItem>
+            </List>
           </Toolbar>
         </div>
       </Drawer>

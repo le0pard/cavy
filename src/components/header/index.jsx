@@ -29,12 +29,21 @@ class Header extends React.Component {
   static propTypes = {
     classes: PropTypes.object.isRequired,
     credentials: PropTypes.shape({
+      selectedDatabase: PropTypes.string,
       databases: PropTypes.arrayOf(PropTypes.string)
-    })
+    }),
+    actions: PropTypes.shape({
+      connectToDatabase: PropTypes.func.isRequired
+    }).isRequired
+  }
+
+  selectDatabase(database) {
+    this.props.actions.connectToDatabase(database.value);
   }
 
   renderDatabaseSelector(databases) {
-    const selectorDatabases = databases.map((database) => {
+    const {selectedDatabase} = this.props.credentials;
+    const selectDatabases = databases.map((database) => {
       return {
         label: database,
         value: database
@@ -42,7 +51,15 @@ class Header extends React.Component {
     });
 
     return (
-      <Select name="database" options={selectorDatabases} />
+      <div>
+        <Select
+          name="database"
+          options={selectDatabases}
+          value={selectedDatabase}
+          clearable={false}
+          onChange={this.selectDatabase.bind(this)}
+        />
+      </div>
     );
   }
 

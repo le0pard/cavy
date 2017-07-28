@@ -4,7 +4,7 @@ import sqlite3 from 'sqlite3';
 import _endsWith from 'lodash/endsWith';
 import _filter from 'lodash/filter';
 import {SQLITE_TYPE} from 'shared/constants';
-import {storeDatabaseConnection} from '../../databases';
+import {getDatabaseConnection, storeDatabaseConnection} from '../../databases';
 
 const connectToServer = (folder, extension = 'sqlite3') => {
   return new Promise((resolve, reject) => {
@@ -20,13 +20,6 @@ const connectToServer = (folder, extension = 'sqlite3') => {
 
       resolve({databases, extension});
     });
-    // const db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (error) => {
-    //   if (error) {
-    //     reject(error);
-    //   } else {
-    //     resolve(db);
-    //   }
-    // });
   });
 };
 
@@ -48,5 +41,46 @@ export const connectToSqliteServer = ({
     return handleSuccessResponse(result);
   }).catch((error) => {
     return handleErrorResponse(error);
+  });
+};
+
+export const connectToSqliteDatabase = ({
+  args,
+  winID,
+  handleSuccessResponse,
+  handleErrorResponse
+}) => {
+  const {databaseName} = args;
+  const databaseConnection = getDatabaseConnection(winID);
+  if (databaseConnection.connection) {
+    databaseConnection.connection.close();
+  }
+  const dbPath = path.join(databaseConnection.folder, `${databaseName}.${databaseConnection.extension}`);
+  const connection = new sqlite3.Database(dbPath, sqlite3.OPEN_READWRITE, (error) => {
+    if (error) {
+      handleErrorResponse(error);
+    } else {
+      storeDatabaseConnection(winID, {
+        ...databaseConnection,
+        databaseName,
+        connection
+      });
+      const SQL = [
+        'SELECT name, type FROM sqlite_master',
+        'WHERE (type=\'table\') AND name!=\'\'',
+        'AND name NOT LIKE \'sqlite_%\'',
+        'ORDER BY \'name\' ASC'
+      ].join(' ');
+      connection.all(SQL, (err, tables) => {
+        if (err) {
+          handleErrorResponse(err);
+        } else {
+          handleSuccessResponse({
+            tables
+          });
+        }
+      });
+
+    }
   });
 };
