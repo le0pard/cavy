@@ -84,3 +84,23 @@ export const connectToSqliteDatabase = ({
     }
   });
 };
+
+export const selectSqliteTable = ({
+  args,
+  winID,
+  handleSuccessResponse,
+  handleErrorResponse
+}) => {
+  const {tableName} = args;
+  const databaseConnection = getDatabaseConnection(winID);
+  // FIXME: https://github.com/mapbox/node-sqlite3/issues/279 bind params not works for PRAGMA, need sanitize input manually
+  databaseConnection.connection.all(`PRAGMA table_info(${tableName})`, (err, info) => {
+    if (err) {
+      handleErrorResponse(err);
+    } else {
+      handleSuccessResponse({
+        info
+      });
+    }
+  });
+};

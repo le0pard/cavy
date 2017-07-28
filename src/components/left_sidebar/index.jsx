@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {actions as credentialsActions} from 'containers/sqlite/credentials';
+import {actions as databaseActions} from 'containers/sqlite/database';
 
 import './index.sass';
 
@@ -10,7 +10,14 @@ class LeftSidebar extends React.Component {
   static propTypes = {
     database: PropTypes.shape({
       tables: PropTypes.arrayOf(PropTypes.object)
-    })
+    }),
+    actions: PropTypes.shape({
+      selectTable: PropTypes.func.isRequired
+    }).isRequired
+  }
+
+  selectTable(table) {
+    this.props.actions.selectTable(table.name);
   }
 
   renderTables() {
@@ -19,9 +26,11 @@ class LeftSidebar extends React.Component {
 
     return (
       <ul>
-        {tables.map((table) => {
+        {tables.map((table, index) => {
           return (
-            <li key={table.name}>{table.name}</li>
+            <li key={index} onClick={() => this.selectTable(table)}>
+              {table.name}
+            </li>
           );
         })}
       </ul>
@@ -32,7 +41,7 @@ class LeftSidebar extends React.Component {
 
     return (
       <div>
-        <h2>Tables</h2>
+        <h2>SQLITE Tables</h2>
         {this.renderTables()}
       </div>
     );
@@ -44,7 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(credentialsActions, dispatch)
+  actions: bindActionCreators(databaseActions, dispatch)
 });
 
 export default connect(
