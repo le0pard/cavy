@@ -35,11 +35,11 @@ export const initRenderListener = (windowID) => {
     new Promise((resolve, reject) => {
       const dbConnection = getDatabaseConnection(windowID);
       if (dbConnection && dbConnection.connection) {
-        return getDatabaseInfo(dbConnection.connection).then((tables) => {
+        return getDatabaseInfo(dbConnection.connection).then(({tables, views}) => {
           return resolve({
             sqlite: {
               credentials: {},
-              database: {tables}
+              database: {tables, views}
             }
           });
         });

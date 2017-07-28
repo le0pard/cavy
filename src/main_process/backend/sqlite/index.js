@@ -57,8 +57,8 @@ export const connectToSqliteDatabase = ({
         databaseName,
         connection
       });
-      getDatabaseInfo(connection).then((tables) => {
-        handleSuccessResponse({tables});
+      getDatabaseInfo(connection).then((schema) => {
+        handleSuccessResponse(schema);
       }).catch((err) => {
         handleErrorResponse(err);
       });

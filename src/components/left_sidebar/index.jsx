@@ -9,12 +9,17 @@ import './index.sass';
 class LeftSidebar extends React.Component {
   static propTypes = {
     database: PropTypes.shape({
-      tables: PropTypes.arrayOf(PropTypes.object)
+      tables: PropTypes.arrayOf(PropTypes.object),
+      views: PropTypes.arrayOf(PropTypes.object)
     })
   }
 
   selectTable(table) {
-    console.log('Table', table)
+    console.log('Table', table);
+  }
+
+  selectView(view) {
+    console.log('View', view);
   }
 
   renderTables() {
@@ -34,12 +39,31 @@ class LeftSidebar extends React.Component {
     );
   }
 
+  renderViews() {
+    const {views} = this.props.database;
+    if (!views) return null;
+
+    return (
+      <ul>
+        {views.map((view, index) => {
+          return (
+            <li key={index} onClick={() => this.selectView(view)}>
+              {view.name}
+            </li>
+          );
+        })}
+      </ul>
+    );
+  }
+
   render() {
 
     return (
       <div>
         <h2>SQLITE Tables</h2>
         {this.renderTables()}
+        <h2>SQLITE Views</h2>
+        {this.renderViews()}
       </div>
     );
   }
