@@ -1,7 +1,7 @@
-import sqliteActionTypes from './action_types';
-import * as sqliteActions from './actions';
-import sqliteReducer from './reducer';
+import credentialsActionTypes from './action_types';
+import * as credentialsActions from './actions';
+import credentialsReducer from './reducer';
 
-export const actionTypes = sqliteActionTypes;
-export const actions = sqliteActions;
-export const reducer = sqliteReducer;
+export const actionTypes = credentialsActionTypes;
+export const actions = credentialsActions;
+export const reducer = credentialsReducer;

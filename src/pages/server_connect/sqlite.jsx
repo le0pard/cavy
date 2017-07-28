@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {actions as credentialsActions} from 'containers/sqlite/credentials';
-import Button from 'material-ui/Button';
 import {remote} from 'electron';
 import {SQLITE_TYPE} from 'shared/constants';
 
@@ -59,13 +58,13 @@ class SqliteServerConnect extends React.Component {
       <div>
         <h3>Sqlite3</h3>
         <form onSubmit={this.handleOnSubmit.bind(this)}>
-          <Button raised={true} color="accent" onClick={this.handleOnSelectFolder.bind(this)}>
+          <button onClick={this.handleOnSelectFolder.bind(this)}>
             Select directory
-          </Button>
+          </button>
           <p>{folder}</p>
-          <Button raised={true} color="primary" type="submit">
+          <button type="submit">
             Connect
-          </Button>
+          </button>
         </form>
       </div>
     );

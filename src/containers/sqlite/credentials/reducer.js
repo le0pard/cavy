@@ -4,8 +4,7 @@ const initialState = {
   folder: null,
   extension: 'sqlite3',
   databases: null,
-  selectedDatabase: null,
-  tables: null
+  selectedDatabase: null
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,13 +28,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         selectedDatabase: databaseName
-      };
-    }
-    case actionTypes.SQLITE_CREDENTIALS_DATABASE_REQUEST_SUCCESS: {
-      const {result: {tables}} = action;
-      return {
-        ...state,
-        tables
       };
     }
     default:
