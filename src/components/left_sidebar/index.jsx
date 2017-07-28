@@ -10,14 +10,11 @@ class LeftSidebar extends React.Component {
   static propTypes = {
     database: PropTypes.shape({
       tables: PropTypes.arrayOf(PropTypes.object)
-    }),
-    actions: PropTypes.shape({
-      selectTable: PropTypes.func.isRequired
-    }).isRequired
+    })
   }
 
   selectTable(table) {
-    this.props.actions.selectTable(table.name);
+    console.log('Table', table)
   }
 
   renderTables() {

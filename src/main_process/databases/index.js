@@ -1,6 +1,7 @@
 import {ipcMain} from 'electron';
 import {getIpcOnRendererLoad} from 'shared/ipc';
 import _omit from 'lodash/omit';
+import {getDatabaseInfo} from '../backend/sqlite/schema';
 
 let connectedDatabases = {};
 
@@ -30,10 +31,32 @@ export const initRenderListener = (windowID) => {
   const actionTypes = getIpcOnRendererLoad(windowID);
 
   ipcMain.on(actionTypes.IPC_RENDERER_LOADED_REQUEST, (event) => {
-    event.sender.send(
-      actionTypes.IPC_RENDERER_LOADED_RESPONSE,
-      {}
-    );
+
+    new Promise((resolve, reject) => {
+      const dbConnection = getDatabaseConnection(windowID);
+      if (dbConnection && dbConnection.connection) {
+        return getDatabaseInfo(dbConnection.connection).then((tables) => {
+          return resolve({
+            sqlite: {
+              credentials: {},
+              database: {tables}
+            }
+          });
+        });
+      } else {
+        return resolve({});
+      }
+    }).then((result) => {
+      event.sender.send(
+        actionTypes.IPC_RENDERER_LOADED_RESPONSE,
+        result
+      );
+    }).catch(() => {
+      event.sender.send(
+        actionTypes.IPC_RENDERER_LOADED_RESPONSE,
+        {}
+      );
+    });
   });
 };
 

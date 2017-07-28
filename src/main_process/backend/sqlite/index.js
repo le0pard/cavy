@@ -5,23 +5,7 @@ import _endsWith from 'lodash/endsWith';
 import _filter from 'lodash/filter';
 import {SQLITE_TYPE} from 'shared/constants';
 import {getDatabaseConnection, storeDatabaseConnection} from '../../databases';
-
-const connectToServer = (folder, extension = 'sqlite3') => {
-  return new Promise((resolve, reject) => {
-    fs.readdir(folder, (err, files) => {
-      if (err) {
-        reject(error);
-      }
-      const databases = _filter(files, (file) => {
-        return _endsWith(file, extension)
-      }).map((file) => {
-        return path.parse(file).name;
-      });
-
-      resolve({databases, extension});
-    });
-  });
-};
+import {getDatabaseInfo} from './schema';
 
 export const connectToSqliteServer = ({
   args,
@@ -30,7 +14,17 @@ export const connectToSqliteServer = ({
   handleErrorResponse
 }) => {
   const {folder} = args.params;
-  return connectToServer(folder).then(({databases, extension}) => {
+  const extension = 'sqlite3';
+  return fs.readdir(folder, (err, files) => {
+    if (err) {
+      return handleErrorResponse(err);
+    }
+    const databases = _filter(files, (file) => {
+      return _endsWith(file, extension)
+    }).map((file) => {
+      return path.parse(file).name;
+    });
+
     const result = {
       type: SQLITE_TYPE,
       folder,
@@ -39,8 +33,6 @@ export const connectToSqliteServer = ({
     };
     storeDatabaseConnection(winID, result);
     return handleSuccessResponse(result);
-  }).catch((error) => {
-    return handleErrorResponse(error);
   });
 };
 
@@ -65,41 +57,10 @@ export const connectToSqliteDatabase = ({
         databaseName,
         connection
       });
-      const SQL = [
-        'SELECT name, type FROM sqlite_master',
-        'WHERE (type=\'table\') AND name!=\'\'',
-        'AND name NOT LIKE \'sqlite_%\'',
-        'ORDER BY \'name\' ASC'
-      ].join(' ');
-      connection.all(SQL, (err, tables) => {
-        if (err) {
-          handleErrorResponse(err);
-        } else {
-          handleSuccessResponse({
-            tables
-          });
-        }
-      });
-
-    }
-  });
-};
-
-export const selectSqliteTable = ({
-  args,
-  winID,
-  handleSuccessResponse,
-  handleErrorResponse
-}) => {
-  const {tableName} = args;
-  const databaseConnection = getDatabaseConnection(winID);
-  // FIXME: https://github.com/mapbox/node-sqlite3/issues/279 bind params not works for PRAGMA, need sanitize input manually
-  databaseConnection.connection.all(`PRAGMA table_info(${tableName})`, (err, info) => {
-    if (err) {
-      handleErrorResponse(err);
-    } else {
-      handleSuccessResponse({
-        info
+      getDatabaseInfo(connection).then((tables) => {
+        handleSuccessResponse({tables});
+      }).catch((err) => {
+        handleErrorResponse(err);
       });
     }
   });
